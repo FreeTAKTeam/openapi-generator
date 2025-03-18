@@ -1,0 +1,23 @@
+
+import { IsNotEmpty, IsString, IsBoolean, IsOptional } from 'class-validator';
+
+export class {{classname}}Request {
+
+{{#properties}}
+    {{#description}}
+    /** {{description}} */
+    {{/description}}
+    @IsOptional()
+    {{#isString}}
+    @IsString()
+    {{/isString}}
+    {{#isBoolean}}
+    @IsBoolean()
+    {{/isBoolean}}
+    {{#isNumber}}
+    // Add appropriate validator if needed
+    {{/isNumber}}
+    {{name}}: {{type}};
+{{/properties}}
+
+}
