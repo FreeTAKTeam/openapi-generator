@@ -1,0 +1,268 @@
+openapi: 3.0.1
+info:
+  title: SubscriberManagementAPI
+  version: '25.03.21d'
+  description: >-
+    The SubscriberManagementAPI, part of ViewBid.ca Auction application provides functionalities to manage subscriber data. 
+    
+    Specifically, it supports creating, updating, retrieving, and deleting subscriber records through standard CRUD operations. Additionally, it offers specialized example methods for administrative tasks such as calculating the number of active ("good") subscribers and automated cleanup of inactive subscriber accounts (unused for 60 days or more). 
+  contact:
+    name: Will Taylor-Melanson
+    url: https:/viewbid.ca
+    email: willdev@viewbid.ca
+  license:
+    name: viewbid.ca
+tags:
+  - name: Subscriber
+paths:
+  /subscribers:
+    post:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Creates a new subscribers record.
+      operationId: Createsubscribers
+      requestBody:
+        $ref: '#/components/requestBodies/subscribers'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_post'
+    delete:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Deletes an existing subscribers record based on the provided ID.
+      operationId: Deletesubscribers
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_delete'
+    get:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Retrieves a list of all subscribers
+      operationId: Listsubscribers
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_get'
+    patch:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Updates an existing subscribers record.
+      operationId: Patchsubscribers
+      requestBody:
+        $ref: '#/components/requestBodies/subscribers'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_patch'
+  /subscribers/{id}:
+    get:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: retrieve an existing subscribers record based on the provided ID.
+      operationId: Retreivesubscribers
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_get'
+  /subscribersHelper:
+    get:
+      x-scope: package
+      tags:
+       - subscribersHelper
+      description: >-
+        this example method query the database and retrieve a list of subscribers and calculate the number of  "good" subscribers based on certain parameters
+      operationId: CalculateGoodSubscriberNumber
+      responses:
+        '200':
+          description: simple text based return value
+          content:
+            text/plain:
+              schema:
+    put:
+      x-scope: private
+      tags:
+       - subscribersHelper
+      description: >-
+        this is a <b>private </b>method, not be exposed in the API, delete subscribers that are not active since 60 days from the current day. It returns a boolean (true for success, false for error)
+      operationId: CleanUpSubscriberHelper
+      requestBody:
+        $ref: '#/components/requestBodies/subscribers'
+      responses:
+        '200':
+          description: simple text based return value
+          content:
+            text/plain:
+              schema:
+                type: boolean
+components:
+  schemas:
+    subscribers:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+            createdon:
+              type: string
+              format: date
+              description: >-
+            createdby:
+              type: string
+              format: date
+              description: >-
+            updatedon:
+              type: string
+              format: date
+              description: >-
+            updatedby:
+              type: string
+              format: date
+              description: >-
+            deletedon:
+              type: string
+              format: date
+              description: >-
+            deletedby:
+              type: string
+              description: >-
+            accountsid:
+              type: string
+              description: >-
+            subscriptionkey:
+              type: string
+              description: >-
+    Error:
+      description: Error
+  parameters:
+    ID:
+      name: id
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: query
+    id:
+      name: id
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: path
+  responses:
+    200subscribers_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    200subscribers_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    200subscribers_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    200subscribers_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    '200':
+      description: OK
+    '201':
+      description: Added Object
+    '202':
+      description: Accepted
+    '204':
+      description: Deleted
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '405':
+      description: Method Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '501':
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '503':
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    'Error':
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  requestBodies:
+    subscribers:
+      description: >-
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+      required: true
+x-uml-relationships:
+  
+
