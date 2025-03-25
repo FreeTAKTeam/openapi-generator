@@ -1,0 +1,13 @@
+model Subscribers {
+    id String @id @default(uuid()) @db.Uuid
+    createdOn DateTime @db.Timestamp
+    createdBy String @db.Uuid
+    updatedOn DateTime @db.Timestamp
+    updatedBy String @db.Uuid
+    deletedOn DateTime @db.Timestamp
+    deletedBy String @db.Uuid
+    accountMappingsId String
+    subscriptionKey String
+
+
+}
