@@ -1,0 +1,128 @@
+
+// Hello there from the controller
+import { Injectable, Optional } from '@nestjs/common';
+import { HttpService } from '@nestjs/axios';
+import type { AxiosRequestConfig, AxiosResponse } from 'axios';
+import { Observable, from, of, switchMap } from 'rxjs';
+import { Subscribers } from '../model/subscribers';
+import { Configuration } from '../configuration';
+import { COLLECTION_FORMATS } from '../variables';
+
+
+@Injectable()
+export class SubscribersHelperService {
+
+    protected basePath = 'http://localhost';
+    public defaultHeaders: Record<string,string> = {};
+    public configuration = new Configuration();
+    protected httpClient: HttpService;
+
+    constructor(httpClient: HttpService, @Optional() configuration: Configuration) {
+        this.configuration = configuration || this.configuration;
+        this.basePath = configuration?.basePath || this.basePath;
+        this.httpClient = configuration?.httpClient || httpClient;
+    }
+
+    /**
+     * @param consumes string[] mime-types
+     * @return true: consumes contains 'multipart/form-data', false: otherwise
+     */
+    private canConsumeForm(consumes: string[]): boolean {
+        const form = 'multipart/form-data';
+        return consumes.includes(form);
+    }
+
+    /**
+     * 
+     * this example method query the database and retrieve a list of subscribers and calculate the number of  \&quot;good\&quot; subscribers based on certain parameters
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     * @param {*} [calculateGoodSubscriberNumberOpts.config] Override http request option.
+     */
+    public calculateGoodSubscriberNumber(calculateGoodSubscriberNumberOpts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<any>>;
+    public calculateGoodSubscriberNumber(calculateGoodSubscriberNumberOpts?: { config?: AxiosRequestConfig }): Observable<any> {
+        let headers = {...this.defaultHeaders};
+
+        let accessTokenObservable: Observable<any> = of(null);
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers['Accept'] = httpHeaderAcceptSelected;
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+        ];
+        return accessTokenObservable.pipe(
+            switchMap((accessToken) => {
+                if (accessToken) {
+                    headers['Authorization'] = `Bearer ${accessToken}`;
+                }
+
+                return this.httpClient.get<any>(`${this.basePath}/subscribersHelper`,
+                    {
+                        withCredentials: this.configuration.withCredentials,
+                        ...calculateGoodSubscriberNumberOpts?.config,
+                        headers: {...headers, ...calculateGoodSubscriberNumberOpts?.config?.headers},
+                    }
+                );
+            })
+        );
+    }
+    /**
+     * 
+     * this is a &lt;b&gt;private &lt;/b&gt;method, not be exposed in the API, delete subscribers that are not active since 60 days from the current day. It returns a boolean (true for success, false for error)
+     * @param subscribers 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     * @param {*} [cleanUpSubscriberHelperOpts.config] Override http request option.
+     */
+    public cleanUpSubscriberHelper(subscribers: Subscribers, cleanUpSubscriberHelperOpts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<boolean>>;
+    public cleanUpSubscriberHelper(subscribers: Subscribers, cleanUpSubscriberHelperOpts?: { config?: AxiosRequestConfig }): Observable<any> {
+        if (subscribers === null || subscribers === undefined) {
+            throw new Error('Required parameter subscribers was null or undefined when calling cleanUpSubscriberHelper.');
+        }
+
+        let headers = {...this.defaultHeaders};
+
+        let accessTokenObservable: Observable<any> = of(null);
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'text/plain'
+        ];
+        const httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers['Accept'] = httpHeaderAcceptSelected;
+        }
+
+        // to determine the Content-Type header
+        const consumes: string[] = [
+            'application/json'
+        ];
+        const httpContentTypeSelected: string | undefined = this.configuration.selectHeaderContentType(consumes);
+        if (httpContentTypeSelected != undefined) {
+            headers['Content-Type'] = httpContentTypeSelected;
+        }
+        return accessTokenObservable.pipe(
+            switchMap((accessToken) => {
+                if (accessToken) {
+                    headers['Authorization'] = `Bearer ${accessToken}`;
+                }
+
+                return this.httpClient.put<boolean>(`${this.basePath}/subscribersHelper`,
+                    subscribers,
+                    {
+                        withCredentials: this.configuration.withCredentials,
+                        ...cleanUpSubscriberHelperOpts?.config,
+                        headers: {...headers, ...cleanUpSubscriberHelperOpts?.config?.headers},
+                    }
+                );
+            })
+        );
+    }
+}

@@ -1,0 +1,21 @@
+templateDir: modules/openapi-generator/src/main/resources/typescript-nestjs-custom
+additionalProperties:
+  artifactId: typescript-viewbid-nestjs
+  serializableModel: "true"
+  dateLibrary: java8
+files:
+  dto.mustache:
+    templateType: API
+    destinationFilename: dto-api.ts
+    folder: dto
+  api.service.mustache:
+    templateType: Model
+    destinationFilename: dto-model.ts
+    folder: model
+  model.mustache:
+    templateType: SupportingFiles
+    destinationFilename: dto-supporting-files.ts
+  api.controller.mustache:
+    templateType: API
+    destinationFilename: api.controller.ts
+    folder: controllers

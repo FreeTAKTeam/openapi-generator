@@ -1,11 +1,14 @@
 <settings>
     <activeProfiles>
         <activeProfile>default</activeProfile>
+        <activeProfile>memory</activeProfile>
     </activeProfiles>
     <profiles>
         <profile>
-            <id>default</id>
-            <localRepository>${basedir}/local-repo</localRepository>
+            <id>memory</id>
+            <properties>
+                <MAVEN_OPTS>-Xmx4G -Xms2G</MAVEN_OPTS>
+            </properties>
         </profile>
     </profiles>
 </settings>

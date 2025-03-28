@@ -1,0 +1,20 @@
+// File: {{classname}}.dto.ts
+// Test
+export class {{classname}}Dto {
+    {{#properties}}
+        {{#description}}
+        /** {{description}} */
+        {{/description}}
+        @IsOptional()
+        {{#isString}}
+        @IsString()
+        {{/isString}}
+        {{#isBoolean}}
+        @IsBoolean()
+        {{/isBoolean}}
+        {{#isNumber}}
+        // Add appropriate validator if needed
+        {{/isNumber}}
+        {{name}}: {{type}};
+    {{/properties}}
+}
