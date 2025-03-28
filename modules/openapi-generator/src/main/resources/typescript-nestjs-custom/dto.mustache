@@ -1,5 +1,21 @@
 // File: {{classname}}.dto.ts
-// Test
+// Test 3 __
+{{#models}}
+{{#model}}
+
+{{#tsImports}}
+import { {{classname}} } from './{{filename}}';
+{{/tsImports}}
+
+
+{{#description}}
+/**
+ * {{{.}}}
+ */
+{{/description}}
+
+{{#isEnum}}{{>modelEnum}}{{/isEnum}}{{^isEnum}}{{#isAlias}}{{>modelAlias}}{{/isAlias}}{{^isAlias}}{{#taggedUnions}}{{>modelTaggedUnion}}{{/taggedUnions}}{{^taggedUnions}}{{#oneOf}}{{#-first}}{{>modelOneOf}}{{/-first}}{{/oneOf}}{{^oneOf}}{{>modelGeneric}}{{/oneOf}}{{/taggedUnions}}{{/isAlias}}{{/isEnum}}
+
 export class {{classname}}Dto {
     {{#properties}}
         {{#description}}
@@ -18,3 +34,5 @@ export class {{classname}}Dto {
         {{name}}: {{type}};
     {{/properties}}
 }
+{{/model}}
+{{/models}}

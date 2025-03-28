@@ -5,17 +5,21 @@ additionalProperties:
   dateLibrary: java8
 files:
   dto.mustache:
-    templateType: API
-    destinationFilename: dto-api.ts
+    templateType: SupportingFiles
+    destinationFilename: dto.ts
     folder: dto
   api.service.mustache:
     templateType: Model
     destinationFilename: dto-model.ts
     folder: model
   model.mustache:
-    templateType: SupportingFiles
+    templateType: Model
     destinationFilename: dto-supporting-files.ts
   api.controller.mustache:
     templateType: API
     destinationFilename: api.controller.ts
     folder: controllers
+  dto.request.mustache:
+    templateType: SupportingFiles
+    destinationFilename: dto-request.ts
+    folder: dto

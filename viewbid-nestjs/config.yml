@@ -1,0 +1,47 @@
+templateDir: viewbid-nestjs/templates
+
+additionalProperties:
+  artifactId: viewbid-nestjs
+  serializableModel: "true"
+  dateLibrary: java8
+
+files:
+  controllers/controller.mustache:
+    templateType: API
+    destinationFilename: .controller.ts
+    folder: controllers
+  data/db.mustache:
+    templateType: Model
+    destinationFilename: .db.ts
+    folder: data
+  dtos/dto.mustache:
+    templateType: Model
+    destinationFilename: .dto.ts
+    folder: dtos
+  exceptions/not-found-error.mustache:
+    templateType: SupportingFiles
+    destinationFilename: not-found-error.ts
+    folder: exceptions
+  handlers/handler.mustache:
+    templateType: SupportingFiles
+    destinationFilename: handler.ts
+    folder: handlers
+  http/requests/request.mustache:
+    templateType: Model
+    destinationFilename: request.ts
+    folder: http/requests
+  http/responses/response.mustache:
+    templateType: Model
+    destinationFilename: response.ts
+    folder: http/responses
+  http/responses/list.response.mustache:
+    templateType: Model
+    destinationFilename: list.response.ts
+    folder: http/responses
+  module.mustache:
+    templateType: SupportingFiles
+    destinationFilename: module.ts
+  config/constants.mustache:
+    templateType: SupportingFiles
+    destinationFilename: constants.ts
+    folder: config
