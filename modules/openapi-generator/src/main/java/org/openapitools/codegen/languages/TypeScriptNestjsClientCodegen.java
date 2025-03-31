@@ -282,11 +282,34 @@ public class TypeScriptNestjsClientCodegen extends AbstractTypeScriptClientCodeg
 
         List<CodegenOperation> ops = objs.getOperation();
         boolean hasSomeFormParams = false;
+
+        // extension to parse X-scope
         for (CodegenOperation op : ops) {
+            // Process x-scope vendor extension.
+            if (op.vendorExtensions != null && op.vendorExtensions.containsKey("x-scope")) {
+                String scope = op.vendorExtensions.get("x-scope").toString();
+                op.vendorExtensions.put("xScope", scope);
+                op.vendorExtensions.put("isPublic", "public".equalsIgnoreCase(scope));
+                op.vendorExtensions.put("isPrivate", "private".equalsIgnoreCase(scope));
+                op.vendorExtensions.put("isPackage", "package".equalsIgnoreCase(scope));
+                // For 'package' scope, optionally call LLM for a generated snippet.
+                if ("package".equalsIgnoreCase(scope)) {
+                    String snippet = callLLMForImplementation(op);
+                    op.vendorExtensions.put("llmSnippet", snippet);
+                }
+            } else {
+                // Default to public if x-scope is not provided.
+                op.vendorExtensions.put("xScope", "public");
+                op.vendorExtensions.put("isPublic", true);
+                op.vendorExtensions.put("isPrivate", false);
+                op.vendorExtensions.put("isPackage", false);
+            }
+    
             if (op.getHasFormParams()) {
                 hasSomeFormParams = true;
             }
             op.httpMethod = op.httpMethod.toLowerCase(Locale.ENGLISH);
+            // end extension to parse X-scope
 
             // Prep a string buffer where we're going to set up our new version of the string.
             StringBuilder pathBuffer = new StringBuilder();
