@@ -4,6 +4,7 @@ additionalProperties:
   artifactId: viewbid-nestjs
   serializableModel: "true"
   dateLibrary: java8
+  camelCaseFileNaming: "true"
 
 files:
   controllers/controller.mustache:

@@ -3,6 +3,6 @@ import { Constants } from  '../config/constants';
 
 export class {{classname}}NotFoundError extends NotFoundSystemError {
     constructor(id: string) {
-        super('No {{classname}} found with id ' + id, Constants.{{classname}}_NOT_FOUND_ERROR, id, '{{classname}}#not-found');
+        super('No {{classname}} found with id ' + id, Constants.{{classVarName}}_NOT_FOUND_ERROR, id, '{{classname}}#not-found');
     }
 }

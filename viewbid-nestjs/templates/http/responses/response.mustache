@@ -1,9 +1,9 @@
 
 import { HttpResponse } from "@mvc/http/responses/http.response";
-import { SubscriberDto } from '../../dtos/subscriber.dto';
+import { {{classname}}Dto } from '../../dtos/{{classVarName}}.dto';
 
-export class SubscriberResponse extends HttpResponse {
-    constructor(data: SubscriberDto, details?: object) {
-        super(data, 'Subscriber', data.id, details);
+export class {{classname}}Response extends HttpResponse {
+    constructor(data: {{classname}}Dto, details?: object) {
+        super(data, '{{classname}}', data.id, details);
     }
 }

@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
-import { SubscribersController } from './controllers/subscribers.controller';
-import { SubscribersDbService } from './data/subscribers-db.service';
-import { SubscribersHandler } from './handlers/subscribers.handler';
+import { {{classname}}Controller } from './controllers/{{classVarName}}.controller';
+import { {{classname}}DbService } from './data/{{classVarName}}-db.service';
+import { {{classname}}Handler } from './handlers/{{classVarName}}.handler';
 import { SharedModule } from '../shared/shared.module';
 
 @Module({
-    controllers: [SubscribersController],
+    controllers: [{{classname}}Controller],
     providers: [
-        SubscribersDbService,
-        SubscribersHandler
+        {{classname}}DbService,
+        {{classname}}Handler
     ], // Provide the service and handler
     exports: [], // Export the services for use in other modules
     imports: [SharedModule],
 })
 
-export class SubscribersModule {}
+export class {{classname}}Module {}
