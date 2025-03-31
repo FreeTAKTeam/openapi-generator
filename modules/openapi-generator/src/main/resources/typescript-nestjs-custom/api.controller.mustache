@@ -95,12 +95,48 @@ export class {{classname}} {
      * @param {*} [{{nickname}}Opts.config] Override http request option.
      */
     {{#useSingleRequestParameter}}
+    {{#vendorExtensions}}
+    {{#isPublic}}
     public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
     public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // Regular implementation
+    {{/isPublic}}
+    {{#isPrivate}}
+    private {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
+    private {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // this is an Internal method only, not exposed in the API
+    {{/isPrivate}}
+    {{#isPackage}}
+    // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
+    /// delete this omment afterward
+    // {{operationId}} - PACKAGE SCOPE
+    // Description: {{notes}}
+    public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
+    public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    {{/isPackage}}
+    {{/vendorExtensions}}
     {{/useSingleRequestParameter}}
     {{^useSingleRequestParameter}}
+    {{#vendorExtensions}}
+    {{#isPublic}}
     public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
     public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // Regular implementation
+    {{/isPublic}}
+    {{#isPrivate}}
+    private {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
+    private {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // this is an Internal method only, not exposed in the API
+    {{/isPrivate}}
+    {{#isPackage}}
+    // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
+    /// delete this omment afterward
+    // {{operationId}} - PACKAGE SCOPE
+    // Description: {{notes}}
+    public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<AxiosResponse<{{#returnType}}{{{returnType}}}{{#isResponseTypeFile}}|undefined{{/isResponseTypeFile}}{{/returnType}}{{^returnType}}any{{/returnType}}>>;
+    public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    {{/isPackage}}
+    {{/vendorExtensions}}
     {{/useSingleRequestParameter}}
 {{#allParams.0}}
 {{#useSingleRequestParameter}}
