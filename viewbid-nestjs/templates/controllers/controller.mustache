@@ -1,12 +1,12 @@
 import { BaseController } from '@mvc/controllers/base.controller';
 import { Controller } from '@nestjs/common';
-import { {{classname}}Handler } from '../handlers/{{classFilename}}.handler';
-import { {{classname}}Request } from '../http/requests/{{classFilename}}.request';
-import { {{classname}}Dto } from '../dtos/{{classFilename}}.dto';
-import { {{classname}}ListResponse } from '../http/responses/{{classFilename}}-list.response';
-import { {{classname}}Response } from '../http/responses/{{classFilename}}.response';
+import { {{classname}}Handler } from '../handlers/{{classVarName}}.handler';
+import { {{classname}}Request } from '../http/requests/{{classVarName}}.request';
+import { {{classname}}Dto } from '../dtos/{{classVarName}}.dto';
+import { {{classname}}ListResponse } from '../http/responses/{{classVarName}}-list.response';
+import { {{classname}}Response } from '../http/responses/{{classVarName}}.response';
 
-@Controller('{{classname}}')
+@Controller('{{classVarName}}')
 export class {{classname}}Controller extends BaseController<
     {{classname}}Handler,
     {{classname}}Request,

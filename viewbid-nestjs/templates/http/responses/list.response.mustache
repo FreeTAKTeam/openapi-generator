@@ -1,9 +1,9 @@
-import { SubscriberDto } from '../../dtos/subscriber.dto';
+import { {{classname}}rDto } from '../../dtos/{{classVarName}}.dto';
 import { ListResponse } from '@mvc/http/responses/list-response';
 import { ListResultset } from '@mvc/data/list-resultset';
 
-export class SubscribersListResponse extends ListResponse {
-    constructor(list: ListResultset<SubscriberDto>) {
-        super(list, 'SubscribersList');
+export class {{classname}}ListResponse extends ListResponse {
+    constructor(list: ListResultset<{{classname}}Dto>) {
+        super(list, '{{classname}}List');
     }
 }
