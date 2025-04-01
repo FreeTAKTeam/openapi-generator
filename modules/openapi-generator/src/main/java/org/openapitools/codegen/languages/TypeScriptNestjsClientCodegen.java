@@ -30,6 +30,7 @@ import org.openapitools.codegen.utils.ModelUtils;
 import org.openapitools.codegen.utils.SemVer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.openapitools.codegen.utils.LevioLLMService;
 
 import java.io.File;
 import java.util.*;
@@ -309,6 +310,13 @@ public class TypeScriptNestjsClientCodegen extends AbstractTypeScriptClientCodeg
                 hasSomeFormParams = true;
             }
             op.httpMethod = op.httpMethod.toLowerCase(Locale.ENGLISH);
+            Object xScope = op.getExtensions().get("x-scope");
+        if (xScope != null && "package".equals(xScope.toString())) {
+            String llmImplementation = callLLMForImplementation(op);
+            op.addExtension("llmImplementation", llmImplementation);
+        }
+
+
             // end extension to parse X-scope
 
             // Prep a string buffer where we're going to set up our new version of the string.
@@ -368,6 +376,20 @@ public class TypeScriptNestjsClientCodegen extends AbstractTypeScriptClientCodeg
         }
 
         return operations;
+    }
+
+
+   /**
+     * Processes an operation by calling the LLM service if the operation's x-scope extension equals "package".
+     *
+     * @param op The CodegenOperation to process.
+     */
+    public void processOperation(CodegenOperation op) {
+        Object xScope = op.getExtensions().get("x-scope");
+        if (xScope != null && "package".equals(xScope.toString())) {
+            String llmImplementation = callLLMForImplementation(op);
+            op.addExtension("llmImplementation", llmImplementation);
+        }
     }
 
     /**

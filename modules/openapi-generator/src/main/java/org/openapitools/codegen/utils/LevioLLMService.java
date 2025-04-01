@@ -1,5 +1,4 @@
-package org.openapitools.codegen.utils;
-
+package com.levio.llm;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,20 +15,19 @@ import java.util.Map;
 
 public class LevioLLMService {
 
-    // Environment variables and API endpoint constants
+    // Environment and API endpoint constants.
     private static final String OPENAI_API_KEY_ENV = "OPENAI_API_KEY";
     private static final String CHATGPT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
 
-    // Request headers and authorization constants
+    // HTTP header constants.
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
     private static final String HEADER_CONTENT_TYPE_VALUE = "application/json";
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
-    // Model and prompt constants
+    // Model and prompt constants.
     private static final String MODEL = "gpt-4";
     private static final String FALLBACK_PROMPT_PREFIX = "Implement operation ";
-    // Customize the prompt
     private static final String SYSTEM_PROMPT = """
             You are a NestJS expert. Generate TypeScript code for NestJS controllers/services operation: 
             - method decorators  
@@ -39,7 +37,7 @@ public class LevioLLMService {
             Return ONLY the code block with no additional text.
             """;
 
-    // Error and response message constants
+    // Error message constants.
     private static final String LLM_API_KEY_NOT_SET = "// LLM API key is not set.";
     private static final String NO_VALID_RESPONSE = "// No valid response from LLM.";
     private static final String LLM_API_ERROR_PREFIX = "// LLM API error: ";
@@ -58,16 +56,14 @@ public class LevioLLMService {
             return LLM_API_KEY_NOT_SET;
         }
 
-        // Prepare a prompt based on the operation's summary or fallback to operationId.
-        String prompt = (op.summary != null && !op.summary.isEmpty())
-                ? op.summary
-                : FALLBACK_PROMPT_PREFIX + op.operationId;
+        // Build the LLM prompt using operation details.
+        String prompt = buildLLMPrompt(op);
 
-        // Build the request payload for ChatGPT API.
+        // Build the request payload for the ChatGPT API.
         Map<String, Object> payload = new HashMap<>();
         payload.put("model", MODEL);
 
-        // Build the messages array with a system prompt and a user prompt.
+        // Construct the messages list with a system prompt and a user prompt.
         List<Map<String, String>> messages = new ArrayList<>();
 
         Map<String, String> systemMessage = new HashMap<>();
@@ -116,5 +112,50 @@ public class LevioLLMService {
             return EXCEPTION_CALLING_LLM_PREFIX + e.getMessage();
         }
     }
-}
 
+    /**
+     * Builds the LLM prompt based on the operation details.
+     *
+     * @param op The CodegenOperation containing operation details.
+     * @return A prompt string for the LLM.
+     */
+    private String buildLLMPrompt(CodegenOperation op) {
+        StringBuilder promptBuilder = new StringBuilder();
+        promptBuilder.append("Generate a NestJS implementation for the following operation:\n");
+        promptBuilder.append("Operation ID: ").append(op.operationId).append("\n");
+        promptBuilder.append("HTTP Method: ").append(op.httpMethod).append("\n");
+        promptBuilder.append("Path: ").append(op.path).append("\n");
+
+        // Include parameters if available.
+        if (op.allParams != null && !op.allParams.isEmpty()) {
+            promptBuilder.append("Parameters:\n");
+            op.allParams.forEach(param -> {
+                promptBuilder.append("- ").append(param.paramName)
+                             .append(" (").append(param.dataType).append(")\n");
+            });
+        }
+
+        // Include responses if available.
+        if (op.responses != null && !op.responses.isEmpty()) {
+            promptBuilder.append("Responses:\n");
+            op.responses.forEach((code, response) -> {
+                promptBuilder.append("- ").append(code)
+                             .append(": ").append(response.message).append("\n");
+            });
+        }
+        return promptBuilder.toString();
+    }
+
+    /**
+     * Processes an operation by calling the LLM service if the operation's x-scope extension equals "package".
+     *
+     * @param op The CodegenOperation to process.
+     */
+    public void processOperation(CodegenOperation op) {
+        Object xScope = op.getExtensions().get("x-scope");
+        if (xScope != null && "package".equals(xScope.toString())) {
+            String llmImplementation = callLLMForImplementation(op);
+            op.addExtension("llmImplementation", llmImplementation);
+        }
+    }
+}
