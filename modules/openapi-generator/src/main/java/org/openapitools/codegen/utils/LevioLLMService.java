@@ -28,17 +28,15 @@ public class LevioLLMService {
     // Model and prompt constants.
     private static final String MODEL = "gpt-4o";
     private static final String FALLBACK_PROMPT_PREFIX = "Implement operation ";
-    private static final String SYSTEM_PROMPT = """
-        You are a NestJS expert.
-        Generate a TypeScript function code for NestJS controllers/services operation:
-            - method decorators
-            - Proper dependency injection
-            - Request/response DTOs where needed
-            - Error and exception handling
-        Return ONLY the code block with no additional text.
-        Do not use codeblocks, do not create the class, only the function, do not hardcode any values, do not add imports.
-        Use the function description to fully implement the business logic described there.
-    """;
+    private static final String SYSTEM_PROMPT = "You are a NestJS expert.\n" +
+        "Generate a TypeScript function code for NestJS controllers/services operation:\n" +
+        "    - method decorators\n" +
+        "    - Proper dependency injection\n" +
+        "    - Request/response DTOs where needed\n" +
+        "    - Error and exception handling\n" +
+        "Return ONLY the code block with no additional text.\n" +
+        "Do not use codeblocks, do not create the class, only the function, do not hardcode any values, do not add imports.\n" +
+        "Use the function description to fully implement the business logic described there.";
 
     // Error message constants.
     private static final String LLM_API_KEY_NOT_SET = "// LLM API key is not set.";
