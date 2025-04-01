@@ -6,20 +6,20 @@ additionalProperties:
 files:
   dto.mustache:
     templateType: SupportingFiles
-    destinationFilename: dto.ts
+    destinationFilename: .dto.ts
     folder: dto
   api.service.mustache:
     templateType: Model
-    destinationFilename: dto-model.ts
+    destinationFilename: .dto-model.ts
     folder: model
   model.mustache:
     templateType: Model
-    destinationFilename: dto-supporting-files.ts
+    destinationFilename: .dto-supporting-files.ts
   api.controller.mustache:
     templateType: API
-    destinationFilename: api.controller.ts
+    destinationFilename: .api-controller.ts
     folder: controllers
   dto.request.mustache:
     templateType: SupportingFiles
-    destinationFilename: dto-request.ts
+    destinationFilename: .dto-request.ts
     folder: dto

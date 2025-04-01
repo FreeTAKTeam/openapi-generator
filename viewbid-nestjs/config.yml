@@ -2,8 +2,7 @@ templateDir: viewbid-nestjs/templates
 
 additionalProperties:
   artifactId: viewbid-nestjs
-  serializableModel: "true"
-  dateLibrary: java8
+  dateLibrary: string
   camelCaseFileNaming: "true"
 
 files:
@@ -16,7 +15,7 @@ files:
     destinationFilename: .db.ts
     folder: data
   dtos/dto.mustache:
-    templateType: Model
+    templateType: SupportingFiles
     destinationFilename: .dto.ts
     folder: dtos
   exceptions/not-found-error.mustache:

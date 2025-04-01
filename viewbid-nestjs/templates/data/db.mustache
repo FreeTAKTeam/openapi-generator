@@ -1,3 +1,5 @@
+{{#models}}
+{{#model}}
 import { Injectable } from '@nestjs/common';
 import { BaseDbService } from '@mvc/data/base-db.service';
 import { Prisma } from "@prisma/client";
@@ -15,3 +17,5 @@ export class {{classname}}DbService extends BaseDbService<Prisma.{{classname}}De
         throw new {{classname}}NotFoundError(id);
     }
 }
+{{/model}}
+{{/models}}

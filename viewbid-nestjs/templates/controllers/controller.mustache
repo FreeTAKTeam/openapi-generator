@@ -1,12 +1,21 @@
+{{>licenseInfo}}
+
+import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { BaseController } from '@mvc/controllers/base.controller';
-import { Controller } from '@nestjs/common';
+import { AxiosRequestConfig } from 'axios';
+import { Observable } from 'rxjs';
 import { {{classname}}Handler } from '../handlers/{{classVarName}}.handler';
 import { {{classname}}Request } from '../http/requests/{{classVarName}}.request';
 import { {{classname}}Dto } from '../dtos/{{classVarName}}.dto';
 import { {{classname}}ListResponse } from '../http/responses/{{classVarName}}-list.response';
 import { {{classname}}Response } from '../http/responses/{{classVarName}}.response';
 
-@Controller('{{classVarName}}')
+{{#description}}
+/**
+ * {{&description}}
+ */
+{{/description}}
+@Controller('{{classname}}')
 export class {{classname}}Controller extends BaseController<
     {{classname}}Handler,
     {{classname}}Request,
@@ -18,5 +27,114 @@ export class {{classname}}Controller extends BaseController<
     constructor(handler: {{classname}}Handler) {
         super(handler, {{classname}}Dto, {{classname}}Response, {{classname}}ListResponse);
     }
+{{#operations}}
+{{#operation}}
+    /**
+     * {{summary}}
+     * {{notes}}
+     {{#useSingleRequestParameter}}
+     {{#allParams.0}}
+     * @param {{=<% %>=}}{<%& classname %><%& operationIdCamelCase %>Request}<%={{ }}=%> requestParameters Request parameters.
+     {{/allParams.0}}
+     {{/useSingleRequestParameter}}
+     {{^useSingleRequestParameter}}
+     {{#allParams}}* @param {{paramName}} {{description}}
+     {{/allParams}}
+     {{/useSingleRequestParameter}}
+     * @param {*} [{{nickname}}Opts.config] Override http request option.
+     */
+    @{{#lambda.pascalcase}}{{httpMethod}}{{/lambda.pascalcase}}('{{path}}')
+    {{#useSingleRequestParameter}}
+    {{#vendorExtensions}}
+    {{#isPublic}}
+    public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // Regular implementation
+    {{/isPublic}}
+    {{#isPrivate}}
+    private {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // this is an Internal method only, not exposed in the API
+    {{/isPrivate}}
+    {{#isPackage}}
+    // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
+    /// delete this omment afterward
+    // {{operationId}} - PACKAGE SCOPE
+    // Description: {{notes}}
+    public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    {{/isPackage}}
+    {{/vendorExtensions}}
+    {{/useSingleRequestParameter}}
+    {{^useSingleRequestParameter}}
+    {{#vendorExtensions}}
+    {{#isPublic}}
+    public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // Regular implementation
+    {{/isPublic}}
+    {{#isPrivate}}
+    private {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    // this is an Internal method only, not exposed in the API
+    {{/isPrivate}}
+    {{#isPackage}}
+    // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
+    /// delete this omment afterward
+    // {{operationId}} - PACKAGE SCOPE
+    // Description: {{notes}}
+    public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    {{/isPackage}}
+    {{/vendorExtensions}}
+    {{/useSingleRequestParameter}}
+{{#allParams.0}}
+{{#useSingleRequestParameter}}
+        const {
+        {{#allParams}}
+            {{#vendorExtensions.x-param-has-sanitized-name}}'{{{baseName}}}': {{/vendorExtensions.x-param-has-sanitized-name}}{{paramName}},
+        {{/allParams}}
+        } = requestParameters;
 
+{{/useSingleRequestParameter}}
+{{/allParams.0}}
+{{#allParams}}
+{{#required}}
+        {{#isConstEnumParam}}
+        let {{paramName}} = {{{dataType}}};
+        {{/isConstEnumParam}}
+        {{^isConstEnumParam}}
+        if ({{paramName}} === null || {{paramName}} === undefined) {
+            throw new Error('Required parameter {{paramName}} was null or undefined when calling {{nickname}}.');
+        }
+
+        {{/isConstEnumParam}}
+{{/required}}
+{{/allParams}}
+{{#hasQueryParams}}
+        let queryParameters = new URLSearchParams();
+{{#queryParams}}
+        {{#isArray}}
+        if ({{paramName}}) {
+        {{#isCollectionFormatMulti}}
+            {{paramName}}.forEach((element) => {
+                queryParameters.append('{{baseName}}', <any>element);
+            })
+        {{/isCollectionFormatMulti}}
+        {{^isCollectionFormatMulti}}
+            queryParameters.append('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+        {{/isCollectionFormatMulti}}
+        }
+        {{/isArray}}
+        {{^isArray}}
+        if ({{paramName}} !== undefined && {{paramName}} !== null) {
+        {{#isDateTime}}
+            queryParameters.append('{{baseName}}', (<any>{{paramName}}).toISOString());
+        {{/isDateTime}}
+        {{^isDateTime}}
+            queryParameters.append('{{baseName}}', <any>{{paramName}});
+        {{/isDateTime}}
+        }
+        {{/isArray}}
+{{/queryParams}}
+
+{{/hasQueryParams}}
+
+    }
+{{/operation}}
 }
+{{/operations}}
