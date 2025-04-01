@@ -293,11 +293,6 @@ public class TypeScriptNestjsClientCodegen extends AbstractTypeScriptClientCodeg
                 op.vendorExtensions.put("isPublic", "public".equalsIgnoreCase(scope));
                 op.vendorExtensions.put("isPrivate", "private".equalsIgnoreCase(scope));
                 op.vendorExtensions.put("isPackage", "package".equalsIgnoreCase(scope));
-                // For 'package' scope, optionally call LLM for a generated snippet.
-                if ("package".equalsIgnoreCase(scope)) {
-                    String snippet = callLLMForImplementation(op);
-                    op.vendorExtensions.put("llmSnippet", snippet);
-                }
             } else {
                 // Default to public if x-scope is not provided.
                 op.vendorExtensions.put("xScope", "public");
@@ -305,16 +300,18 @@ public class TypeScriptNestjsClientCodegen extends AbstractTypeScriptClientCodeg
                 op.vendorExtensions.put("isPrivate", false);
                 op.vendorExtensions.put("isPackage", false);
             }
-    
+
             if (op.getHasFormParams()) {
                 hasSomeFormParams = true;
             }
-            op.httpMethod = op.httpMethod.toLowerCase(Locale.ENGLISH);
-            Object xScope = op.getExtensions().get("x-scope");
-        if (xScope != null && "package".equals(xScope.toString())) {
-            String llmImplementation = callLLMForImplementation(op);
-            op.addExtension("llmImplementation", llmImplementation);
-        }
+
+            LevioLLMService llmImplementation = new LevioLLMService();
+            Object xScope = op.vendorExtensions.get("x-scope");
+
+            if (xScope != null && "package".equals(xScope.toString())) {
+                String llmMethod = llmImplementation.callLLMForImplementation(op);
+                op.vendorExtensions.put("llmImplementation", llmMethod);
+            }
 
 
             // end extension to parse X-scope
@@ -385,10 +382,11 @@ public class TypeScriptNestjsClientCodegen extends AbstractTypeScriptClientCodeg
      * @param op The CodegenOperation to process.
      */
     public void processOperation(CodegenOperation op) {
-        Object xScope = op.getExtensions().get("x-scope");
+        Object xScope = op.vendorExtensions.get("x-scope");
         if (xScope != null && "package".equals(xScope.toString())) {
-            String llmImplementation = callLLMForImplementation(op);
-            op.addExtension("llmImplementation", llmImplementation);
+            LevioLLMService llmImplementation = new LevioLLMService();
+            String llmMethod = llmImplementation.callLLMForImplementation(op);
+            op.vendorExtensions.put("llmImplementation", llmMethod);
         }
     }
 

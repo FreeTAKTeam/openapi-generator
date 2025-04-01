@@ -3,9 +3,9 @@ info:
   title: SubscriberManagementAPI
   version: '25.03.21d'
   description: >-
-    The SubscriberManagementAPI, part of ViewBid.ca Auction application provides functionalities to manage subscriber data. 
-    
-    Specifically, it supports creating, updating, retrieving, and deleting subscriber records through standard CRUD operations. Additionally, it offers specialized example methods for administrative tasks such as calculating the number of active ("good") subscribers and automated cleanup of inactive subscriber accounts (unused for 60 days or more). 
+    The SubscriberManagementAPI, part of ViewBid.ca Auction application provides functionalities to manage subscriber data.
+
+    Specifically, it supports creating, updating, retrieving, and deleting subscriber records through standard CRUD operations. Additionally, it offers specialized example methods for administrative tasks such as calculating the number of active ("good") subscribers and automated cleanup of inactive subscriber accounts (unused for 60 days or more).
   contact:
     name: Will Taylor-Melanson
     url: https:/viewbid.ca
@@ -81,7 +81,7 @@ paths:
       tags:
        - subscribersHelper
       description: >-
-        this example method query the database and retrieve a list of subscribers and calculate the number of  "good" subscribers based on certain parameters
+        this example method query the database and retrieve a integer of subscribers to a Auction Lot, we will be passing in the Lot Id as a parameter, evaluate that integer: if the number of subscribers are more than 100 return "Good Auction"; if the number of subscribers is between 99 and 75 return "Medium Auction"; finally if the number of subscribers is less than 75 return "Bad Auction"
       operationId: CalculateGoodSubscriberNumber
       responses:
         '200':
@@ -264,5 +264,3 @@ components:
             $ref: '#/components/schemas/subscribers'
       required: true
 x-uml-relationships:
-  
-

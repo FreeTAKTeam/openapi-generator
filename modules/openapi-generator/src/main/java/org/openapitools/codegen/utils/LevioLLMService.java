@@ -1,4 +1,4 @@
-package com.levio.llm;
+package org.openapitools.codegen.utils;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -26,22 +26,32 @@ public class LevioLLMService {
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
     // Model and prompt constants.
-    private static final String MODEL = "gpt-4";
+    private static final String MODEL = "gpt-4o";
     private static final String FALLBACK_PROMPT_PREFIX = "Implement operation ";
     private static final String SYSTEM_PROMPT = """
-            You are a NestJS expert. Generate TypeScript code for NestJS controllers/services operation: 
-            - method decorators  
+        You are a NestJS expert.
+        Generate a TypeScript function code for NestJS controllers/services operation:
+            - method decorators
             - Proper dependency injection
             - Request/response DTOs where needed
-            - Error and exception handling 
-            Return ONLY the code block with no additional text.
-            """;
+            - Error and exception handling
+        Return ONLY the code block with no additional text.
+        Do not use codeblocks, do not create the class, only the function, do not hardcode any values, do not add imports.
+        Use the function description to fully implement the business logic described there.
+    """;
 
     // Error message constants.
     private static final String LLM_API_KEY_NOT_SET = "// LLM API key is not set.";
     private static final String NO_VALID_RESPONSE = "// No valid response from LLM.";
     private static final String LLM_API_ERROR_PREFIX = "// LLM API error: ";
     private static final String EXCEPTION_CALLING_LLM_PREFIX = "// Exception calling LLM API: ";
+
+    // API Parameter Tuning Defaults.
+    private static final double TEMPERATURE = 0.3;            // Lower values for deterministic output.
+    private static final int MAX_TOKENS = 512;                // Maximum tokens in the response.
+    private static final double TOP_P = 1.0;                  // Controls diversity; 1.0 is default.
+    private static final double FREQUENCY_PENALTY = 0.0;      // No frequency penalty.
+    private static final double PRESENCE_PENALTY = 0.0;       // No presence penalty.
 
     /**
      * Calls the ChatGPT API to generate an implementation snippet based on the given operation.
@@ -51,7 +61,7 @@ public class LevioLLMService {
      */
     public String callLLMForImplementation(CodegenOperation op) {
         // Retrieve the API key from an environment variable.
-        String apiKey = System.getenv(OPENAI_API_KEY_ENV);
+        String apiKey = System.getenv(OPENAI_API_KEY_ENV) != null ? System.getenv(OPENAI_API_KEY_ENV) : OPENAI_API_KEY_ENV;
         if (apiKey == null || apiKey.isEmpty()) {
             return LLM_API_KEY_NOT_SET;
         }
@@ -62,6 +72,11 @@ public class LevioLLMService {
         // Build the request payload for the ChatGPT API.
         Map<String, Object> payload = new HashMap<>();
         payload.put("model", MODEL);
+        payload.put("temperature", TEMPERATURE);
+        payload.put("max_tokens", MAX_TOKENS);
+        payload.put("top_p", TOP_P);
+        payload.put("frequency_penalty", FREQUENCY_PENALTY);
+        payload.put("presence_penalty", PRESENCE_PENALTY);
 
         // Construct the messages list with a system prompt and a user prompt.
         List<Map<String, String>> messages = new ArrayList<>();
@@ -138,8 +153,8 @@ public class LevioLLMService {
         // Include responses if available.
         if (op.responses != null && !op.responses.isEmpty()) {
             promptBuilder.append("Responses:\n");
-            op.responses.forEach((code, response) -> {
-                promptBuilder.append("- ").append(code)
+            op.responses.forEach(response -> {
+                promptBuilder.append("- ").append(response.code)
                              .append(": ").append(response.message).append("\n");
             });
         }
@@ -152,10 +167,10 @@ public class LevioLLMService {
      * @param op The CodegenOperation to process.
      */
     public void processOperation(CodegenOperation op) {
-        Object xScope = op.getExtensions().get("x-scope");
+        Object xScope = op.vendorExtensions.get("x-scope");
         if (xScope != null && "package".equals(xScope.toString())) {
             String llmImplementation = callLLMForImplementation(op);
-            op.addExtension("llmImplementation", llmImplementation);
+            op.vendorExtensions.put("llmImplementation", llmImplementation);
         }
     }
 }

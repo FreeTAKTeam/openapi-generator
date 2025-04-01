@@ -43,43 +43,53 @@ export class {{classname}}Controller extends BaseController<
      {{/useSingleRequestParameter}}
      * @param {*} [{{nickname}}Opts.config] Override http request option.
      */
-    @{{#lambda.pascalcase}}{{httpMethod}}{{/lambda.pascalcase}}('{{path}}')
+    @{{#lambda.pascalcase}}{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}{{/lambda.pascalcase}}('{{path}}')
     {{#useSingleRequestParameter}}
     {{#vendorExtensions}}
+
     {{#isPublic}}
     public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
     // Regular implementation
     {{/isPublic}}
+
     {{#isPrivate}}
     private {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
     // this is an Internal method only, not exposed in the API
     {{/isPrivate}}
+
     {{#isPackage}}
     // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
-    /// delete this omment afterward
+    /// delete this comment afterward
     // {{operationId}} - PACKAGE SCOPE
     // Description: {{notes}}
     public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    {{{llmImplementation}}}
     {{/isPackage}}
+
     {{/vendorExtensions}}
     {{/useSingleRequestParameter}}
     {{^useSingleRequestParameter}}
     {{#vendorExtensions}}
+
     {{#isPublic}}
     public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
     // Regular implementation
     {{/isPublic}}
+
     {{#isPrivate}}
     private {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
     // this is an Internal method only, not exposed in the API
     {{/isPrivate}}
+
     {{#isPackage}}
     // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
-    /// delete this omment afterward
+    /// delete this comment afterward
     // {{operationId}} - PACKAGE SCOPE
     // Description: {{notes}}
     public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
+    {{{llmImplementation}}}
     {{/isPackage}}
+
     {{/vendorExtensions}}
     {{/useSingleRequestParameter}}
 {{#allParams.0}}
