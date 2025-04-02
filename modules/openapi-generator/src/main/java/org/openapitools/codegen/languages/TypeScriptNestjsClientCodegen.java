@@ -309,7 +309,7 @@ public class TypeScriptNestjsClientCodegen extends AbstractTypeScriptClientCodeg
             Object xScope = op.vendorExtensions.get("x-scope");
 
             if (xScope != null && "package".equals(xScope.toString())) {
-                String llmMethod = llmImplementation.callLLMForImplementation(op);
+                String llmMethod = llmImplementation.callLLMForImplementation(op, additionalProperties);
                 op.vendorExtensions.put("llmImplementation", llmMethod);
             }
 

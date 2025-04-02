@@ -4,6 +4,24 @@ additionalProperties:
   artifactId: viewbid-nestjs
   dateLibrary: string
   camelCaseFileNaming: "true"
+  # LLM Configuration for LevioLLMService
+  llmApiEndpoint: "https://api.openai.com/v1/chat/completions"
+  llmModel: "gpt-4o"
+  llmSystemPrompt: |
+    You are a NestJS expert.
+    Generate a TypeScript function code for NestJS controllers/services operation:
+        - Proper dependency injection
+        - Request/response DTOs where needed
+        - Error and exception handling
+    Return ONLY the code with no additional text.Do not put it inside a codeblock.
+    Extract and return only the code inside the function body, excluding the function declaration and closing braces
+    Do not create the class, only the function, do not hardcode any values, do not add imports.
+    Use the function description to fully implement the business logic described there.
+  llmTemperature: 0.3
+  llmMaxTokens: 512
+  llmTopP: 1.0
+  llmFrequencyPenalty: 0.0
+  llmPresencePenalty: 0.0
 
 files:
   controllers/controller.mustache:

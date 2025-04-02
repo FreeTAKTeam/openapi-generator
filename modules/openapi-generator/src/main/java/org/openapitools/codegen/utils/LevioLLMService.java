@@ -15,73 +15,64 @@ import java.util.Map;
 
 public class LevioLLMService {
 
-    // Environment and API endpoint constants.
-    private static final String OPENAI_API_KEY_ENV = "OPENAI_API_KEY";
-    private static final String CHATGPT_API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-
     // HTTP header constants.
     private static final String HEADER_CONTENT_TYPE = "Content-Type";
     private static final String HEADER_CONTENT_TYPE_VALUE = "application/json";
     private static final String HEADER_AUTHORIZATION = "Authorization";
     private static final String AUTHORIZATION_PREFIX = "Bearer ";
 
-    // Model and prompt constants.
-    private static final String MODEL = "gpt-4o";
-    private static final String FALLBACK_PROMPT_PREFIX = "Implement operation ";
-    private static final String SYSTEM_PROMPT = "You are a NestJS expert.\n" +
-        "Generate a TypeScript function code for NestJS controllers/services operation:\n" +
-        "    - method decorators\n" +
-        "    - Proper dependency injection\n" +
-        "    - Request/response DTOs where needed\n" +
-        "    - Error and exception handling\n" +
-        "Return ONLY the code block with no additional text.\n" +
-        "Do not use codeblocks, do not create the class, only the function, do not hardcode any values, do not add imports.\n" +
-        "Use the function description to fully implement the business logic described there.";
-
     // Error message constants.
-    private static final String LLM_API_KEY_NOT_SET = "// LLM API key is not set.";
+    private static final String LLM_API_KEY_NOT_SET = "// LLM_API_KEY environment variable is not set.";
     private static final String NO_VALID_RESPONSE = "// No valid response from LLM.";
     private static final String LLM_API_ERROR_PREFIX = "// LLM API error: ";
     private static final String EXCEPTION_CALLING_LLM_PREFIX = "// Exception calling LLM API: ";
 
-    // API Parameter Tuning Defaults.
-    private static final double TEMPERATURE = 0.3;            // Lower values for deterministic output.
-    private static final int MAX_TOKENS = 512;                // Maximum tokens in the response.
-    private static final double TOP_P = 1.0;                  // Controls diversity; 1.0 is default.
-    private static final double FREQUENCY_PENALTY = 0.0;      // No frequency penalty.
-    private static final double PRESENCE_PENALTY = 0.0;       // No presence penalty.
-
     /**
-     * Calls the ChatGPT API to generate an implementation snippet based on the given operation.
+     * Calls the configured LLM API to generate an implementation snippet based on the given operation.
+     * Assumes all required configuration properties are present in additionalProperties.
      *
      * @param op The CodegenOperation containing details about the API operation.
+     * @param additionalProperties A map containing configuration properties from the generator config.
      * @return A String containing the generated code snippet or an error message.
      */
-    public String callLLMForImplementation(CodegenOperation op) {
-        // Retrieve the API key from an environment variable.
-        String apiKey = System.getenv(OPENAI_API_KEY_ENV) != null ? System.getenv(OPENAI_API_KEY_ENV) : OPENAI_API_KEY_ENV;
+    public String callLLMForImplementation(CodegenOperation op, Map<String, Object> additionalProperties) {
+        // Retrieve configuration directly from additionalProperties.
+        // Assumes these keys exist and have the correct types based on config.yml.
+        String apiEndpoint = (String) additionalProperties.get("llmApiEndpoint");
+        String model = (String) additionalProperties.get("llmModel");
+        String systemPrompt = (String) additionalProperties.get("llmSystemPrompt");
+        // Use helper methods for numeric types for cleaner casting.
+        double temperature = getDoubleProperty(additionalProperties, "llmTemperature");
+        int maxTokens = getIntProperty(additionalProperties, "llmMaxTokens");
+        double topP = getDoubleProperty(additionalProperties, "llmTopP");
+        double frequencyPenalty = getDoubleProperty(additionalProperties, "llmFrequencyPenalty");
+        double presencePenalty = getDoubleProperty(additionalProperties, "llmPresencePenalty");
+
+        // Retrieve the API key directly from the LLM_API_KEY environment variable.
+        String apiKey = System.getenv("LLM_API_KEY");
         if (apiKey == null || apiKey.isEmpty()) {
-            return LLM_API_KEY_NOT_SET;
+             System.err.println("Warning: LLM_API_KEY environment variable not set.");
+             return LLM_API_KEY_NOT_SET;
         }
 
         // Build the LLM prompt using operation details.
         String prompt = buildLLMPrompt(op);
 
-        // Build the request payload for the ChatGPT API.
+        // Build the request payload for the LLM API.
         Map<String, Object> payload = new HashMap<>();
-        payload.put("model", MODEL);
-        payload.put("temperature", TEMPERATURE);
-        payload.put("max_tokens", MAX_TOKENS);
-        payload.put("top_p", TOP_P);
-        payload.put("frequency_penalty", FREQUENCY_PENALTY);
-        payload.put("presence_penalty", PRESENCE_PENALTY);
+        payload.put("model", model);
+        payload.put("temperature", temperature);
+        payload.put("max_tokens", maxTokens);
+        payload.put("top_p", topP);
+        payload.put("frequency_penalty", frequencyPenalty);
+        payload.put("presence_penalty", presencePenalty);
 
         // Construct the messages list with a system prompt and a user prompt.
         List<Map<String, String>> messages = new ArrayList<>();
 
         Map<String, String> systemMessage = new HashMap<>();
         systemMessage.put("role", "system");
-        systemMessage.put("content", SYSTEM_PROMPT);
+        systemMessage.put("content", systemPrompt);
         messages.add(systemMessage);
 
         Map<String, String> userMessage = new HashMap<>();
@@ -99,7 +90,7 @@ public class LevioLLMService {
             // Create HTTP client and request.
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(CHATGPT_API_ENDPOINT))
+                    .uri(URI.create(apiEndpoint)) // Use configured endpoint
                     .header(HEADER_CONTENT_TYPE, HEADER_CONTENT_TYPE_VALUE)
                     .header(HEADER_AUTHORIZATION, AUTHORIZATION_PREFIX + apiKey)
                     .POST(HttpRequest.BodyPublishers.ofString(jsonPayload))
@@ -163,12 +154,34 @@ public class LevioLLMService {
      * Processes an operation by calling the LLM service if the operation's x-scope extension equals "package".
      *
      * @param op The CodegenOperation to process.
+     * @param additionalProperties A map containing configuration properties from the generator config.
      */
-    public void processOperation(CodegenOperation op) {
+    public void processOperation(CodegenOperation op, Map<String, Object> additionalProperties) {
         Object xScope = op.vendorExtensions.get("x-scope");
-        if (xScope != null && "package".equals(xScope.toString())) {
-            String llmImplementation = callLLMForImplementation(op);
+        // Check if core LLM configuration is present before attempting to process (using llmApiEndpoint as a proxy)
+        if (xScope != null && "package".equals(xScope.toString()) && additionalProperties.containsKey("llmApiEndpoint")) {
+            String llmImplementation = callLLMForImplementation(op, additionalProperties);
             op.vendorExtensions.put("llmImplementation", llmImplementation);
         }
+    }
+
+    // Helper method to safely get a double property without defaults
+    private double getDoubleProperty(Map<String, Object> properties, String key) {
+        Object value = properties.get(key);
+        if (value instanceof Number) {
+            return ((Number) value).doubleValue();
+        }
+        // Attempt direct cast or parse, will throw exception if invalid format/type
+        return Double.parseDouble(value.toString());
+    }
+
+    // Helper method to safely get an integer property without defaults
+    private int getIntProperty(Map<String, Object> properties, String key) {
+        Object value = properties.get(key);
+        if (value instanceof Number) {
+            return ((Number) value).intValue();
+        }
+         // Attempt direct cast or parse, will throw exception if invalid format/type
+        return Integer.parseInt(value.toString());
     }
 }
