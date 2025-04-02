@@ -1,8 +1,29 @@
+{{>licenseInfo}}
+{{#models}}
+{{#model}}
 export class {{classname}}Dto {
-    {{#properties}}
-        {{name}}: {{type}};
-    {{/properties}}
+  {{#vars}}
+  {{#description}}
+  /** {{description}} */
+  {{/description}}
+  @IsOptional()
+  {{#isString}}
+  @IsString()
+  {{/isString}}
+  {{#isBoolean}}
+  @IsBoolean()
+  {{/isBoolean}}
+  {{#isNumber}}
+  @IsNumber()
+  {{/isNumber}}
+  {{name}}{{^required}}?{{/required}}: {{dataType}};
 
-    constructor(row: any) {
-    }
+  {{/vars}}
+  constructor(row: any) {
+    {{#vars}}
+    this.{{name}} = row.{{name}};
+    {{/vars}}
+  }
 }
+{{/model}}
+{{/models}}

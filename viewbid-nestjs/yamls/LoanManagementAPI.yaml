@@ -1,0 +1,420 @@
+openapi: 3.0.1
+info:
+  title: LoanManagement
+  version: '24.0.0'
+  description: >-
+  contact:
+    name: Giu Platania
+    url: http://levio.ca
+    email: Giu.Platania@levio.ca
+  license:
+    name: 
+paths:
+  /Loan:
+    post:
+      x-scope: public
+      tags:
+       - Loan
+      description: >-
+        alculate the monthly payment amount for a loan.  This method handles the logic to calculate loan payments using the annuity formula. It would typically accept parameters like loan amount, interest rate, and number of periods. 
+        calculateLoan, calculates the monthly annuity of a loan given the principal, the annual interest rate and the number of periods. It then returns this monthly annuity amount.
+        @return A ResponseEntity containing the formatted loan payment amount.
+        
+        The calculation is as follows
+            ```
+            MonthlyInterestRate = AnnualInterestRate / 12
+            
+            # Calculate the annuity payment using the formula
+            AnnuityPayment = (Principal * MonthlyInterestRate * (1 + MonthlyInterestRate) ^ NumberOfPeriods) /
+                             ((1 + MonthlyInterestRate) ^ NumberOfPeriods - 1)
+            ```
+      summary: Creates a new Loan record.
+      operationId: CreateLoan
+      requestBody:
+        $ref: '#/components/requestBodies/Loan'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Loan_post'
+    delete:
+      x-scope: public
+      tags:
+       - Loan
+      description: >-
+      summary: Deletes an existing Loan record based on the provided ID.
+      operationId: DeleteLoan
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Loan_delete'
+    get:
+      x-scope: public
+      tags:
+       - Loan
+      description: >-
+      summary: Retrieves a list of all Loan
+      operationId: ListLoan
+      responses:
+        '200':
+          $ref: '#/components/responses/200Loan_get'
+    patch:
+      x-scope: public
+      tags:
+       - Loan
+      description: >-
+      summary: Updates an existing Loan record.
+      operationId: PatchLoan
+      requestBody:
+        $ref: '#/components/requestBodies/Loan'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Loan_patch'
+  /PresentValue:
+    post:
+      x-scope: public
+      tags:
+       - PresentValue
+      description: >-
+      summary: Creates a new PresentValue record.
+      operationId: CreatePresentValue
+      requestBody:
+        $ref: '#/components/requestBodies/PresentValue'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PresentValue_post'
+    delete:
+      x-scope: public
+      tags:
+       - PresentValue
+      description: >-
+      summary: Deletes an existing PresentValue record based on the provided ID.
+      operationId: DeletePresentValue
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PresentValue_delete'
+    get:
+      x-scope: public
+      tags:
+       - PresentValue
+      description: >-
+      summary: Retrieves a list of all PresentValue
+      operationId: ListPresentValue
+      responses:
+        '200':
+          $ref: '#/components/responses/200PresentValue_get'
+    patch:
+      x-scope: public
+      tags:
+       - PresentValue
+      description: >-
+      summary: Updates an existing PresentValue record.
+      operationId: PatchPresentValue
+      requestBody:
+        $ref: '#/components/requestBodies/PresentValue'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PresentValue_patch'
+  /Loan/{id}:
+    get:
+      x-scope: public
+      tags:
+       - Loan
+      description: >-
+      summary: retrieve an existing Loan record based on the provided ID.
+      operationId: RetreiveLoan
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Loan_get'
+  /LoanValue:
+    post:
+      x-scope: package
+      tags:
+       - Loan
+      description: >-
+        calculatePresentValue, calculates the present value for a set of cash flows given these cash flows and an annual interest rate. It then returns the present value of these cash flows. 
+        Calculate the present value of a series of cash flows.  This method calculates the present value using the provided interest rate and cash flows over a specified number of periods. 
+        @return A complete currentValue object containing the present value amount.
+        ```
+        # Initialize the present value to 0
+        PresentValue = 0
+        # Convert the annual interest rate to a decimal
+        DiscountRate = AnnualInterestRate / 100
+        # Loop through each cash flow
+        FOR each CashFlow IN CashFlows:
+            # Extract the time period (year) and the cash flow amount
+            Year = CashFlow[0]
+            Amount = CashFlow[1]
+            # Calculate the present value of this cash flow
+            PVofCashFlow = Amount / (1 + DiscountRate) ^ Year
+            # Add this present value to the total present value
+            PresentValue = PresentValue + PVofCashFlow
+        END FOR
+      summary: Calculate the present value of a series of cash flows. 
+      operationId: calculatePresentValue
+      requestBody:
+        $ref: '#/components/requestBodies/PresentValue'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PresentValue_post'
+  /LoanCalculation:
+    post:
+      x-scope: package
+      tags:
+       - Loan
+      description: >-
+        Calculate the monthly payment amount for a loan.  This method handles the logic to calculate loan payments using the annuity formula. It would typically accept parameters like loan amount, interest rate, and number of periods. 
+        calculateLoan, calculates the monthly annuity of a loan given the principal, the loan.interest rate and the number of periods. It then returns this monthly annuity amount.
+        @return A complete load object containing the formatted loan payment amount.
+        The calculation is as follows
+            
+            ```
+            MonthlyInterestRate = loan.interest  / 12
+            
+            # Calculate the annuity payment using the formula
+            AnnuityPayment = (loan.loanAmmount * MonthlyInterestRate * (1 + MonthlyInterestRate) ^ NumberOfPeriods) /
+                             ((1 + MonthlyInterestRate) ^ NumberOfPeriods - 1)
+            ```
+      summary: Calculate the monthly payment amount for a loan.
+      operationId: calculateLoan
+      requestBody:
+        $ref: '#/components/requestBodies/Loan'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Loan_post'
+  /PresentValue/{id}:
+    get:
+      x-scope: public
+      tags:
+       - PresentValue
+      description: >-
+      summary: retrieve an existing PresentValue record based on the provided ID.
+      operationId: RetreivePresentValue
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200PresentValue_get'
+components:
+  schemas:
+    Loan:
+      allOf:
+        - type: object
+          properties:
+            payment:
+              type: number
+              description: >-
+            paymentOut:
+              type: string
+              description: >-
+            annualInterestRatePercentage:
+              type: string
+              description: >-
+            loanAmount:
+              type: number
+              description: >-
+            loanAmountIn:
+              type: string
+              description: >-
+            interest:
+              type: number
+              description: >-
+                the annuam interestrate 
+            loanPeriod:
+              type: string
+              format: time
+              description: >-
+            noOfPeriods:
+              type: integer
+              description: >-
+    PresentValue:
+      allOf:
+        - type: object
+          properties:
+            payment:
+              type: number
+              description: >-
+                In the context of a loan, the annuity payment is the regular (e.g., monthly) payment that the borrower must make to fully repay the loan, including both principal and interest, over the agreed-upon term. The formula used to calculate the annuity payment ensures that the loan is fully paid off by the end of the term, with each payment contributing towards both the principal and the accrued interest.
+            interest:
+              type: number
+              description: >-
+            paymentOut:
+              type: string
+              description: >-
+            counter:
+              type: integer
+              description: >-
+            interestIn:
+              type: string
+              description: >-
+            numData:
+              type: string
+              description: >-
+            noOfPeriods:
+              type: integer
+              description: >-
+            noOfPeriodsIn:
+              type: string
+              description: >-
+            valueAmount:
+              type: number
+              description: >-
+    Error:
+      description: Error
+  parameters:
+    ID:
+      name: id
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: query
+    id:
+      name: id
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: path
+  responses:
+    200Loan_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Loan'
+    200Loan_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Loan'
+    200Loan_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Loan'
+    200Loan_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Loan'
+    200PresentValue_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PresentValue'
+    200PresentValue_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PresentValue'
+    200PresentValue_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PresentValue'
+    200PresentValue_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PresentValue'
+    '200':
+      description: OK
+    '201':
+      description: Added Object
+    '202':
+      description: Accepted
+    '204':
+      description: Deleted
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '405':
+      description: Method Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '501':
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '503':
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    'Error':
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  requestBodies:
+    Loan:
+      description: >-
+        V2 includes 2 new propperties from ACORD.
+        Additionally non business related properties have been removed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Loan'
+      required: true
+    PresentValue:
+      description: >-
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PresentValue'
+      required: true
+x-uml-relationships:
+  
+

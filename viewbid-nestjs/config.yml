@@ -33,7 +33,7 @@ files:
     destinationFilename: .db.ts
     folder: data
   dtos/dto.mustache:
-    templateType: SupportingFiles
+    templateType: Model
     destinationFilename: .dto.ts
     folder: dtos
   exceptions/not-found-error.mustache:
@@ -54,7 +54,7 @@ files:
     folder: http/responses
   http/responses/list.response.mustache:
     templateType: Model
-    destinationFilename: list.response.ts
+    destinationFilename: list-response.ts
     folder: http/responses
   module.mustache:
     templateType: SupportingFiles
@@ -63,3 +63,7 @@ files:
     templateType: SupportingFiles
     destinationFilename: constants.ts
     folder: config
+  model.prisma.mustache:
+    templateType: Model
+    destinationFilename: model.prisma
+

@@ -1,0 +1,13 @@
+{{#models}}
+{{#model}}
+/// {{description}}
+model {{classname}} {
+  {{#vars}}
+  {{#description}}
+  /// {{description}}
+  {{/description}}
+  {{name}}{{^required}}?{{/required}} {{#isNumber}}Int{{/isNumber}}{{^isNumber}}{{dataType}}{{/isNumber}}
+  {{/vars}}
+}
+{{/model}}
+{{/models}}

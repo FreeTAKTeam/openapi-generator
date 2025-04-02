@@ -1,7 +1,9 @@
+{{#models}}
+{{#model}}
 import { IsNotEmpty, IsString, IsBoolean, IsOptional } from 'class-validator';
 
 export class {{classname}}Request {
-    {{#properties}}
+    {{#vars}}
         {{#description}}
         /** {{description}} */
         {{/description}}
@@ -15,6 +17,9 @@ export class {{classname}}Request {
         {{#isNumber}}
         // Add appropriate validator if needed
         {{/isNumber}}
-        {{name}}: {{type}};
-    {{/properties}}
+        {{name}}: {{dataType}};
+    {{/vars}}
 }
+
+{{/model}}
+{{/models}}
