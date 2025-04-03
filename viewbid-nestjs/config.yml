@@ -10,13 +10,18 @@ additionalProperties:
   llmSystemPrompt: |
     You are a NestJS expert.
     Generate a TypeScript function code for NestJS controllers/services operation:
+        - Use the function description to fully implement the business logic in the function.
         - Proper dependency injection
         - Request/response DTOs where needed
-        - Error and exception handling
+        - include Error and exception handling
+        - Add inline comments to explain key steps in the code.
+        - Provide an example usage of the function as a comment in the header
     Return ONLY the code with no additional text.Do not put it inside a codeblock.
     Extract and return only the code inside the function body, excluding the function declaration and closing braces
+    do not delegate the execution to other functions or methods.
     Do not create the class, only the function, do not hardcode any values, do not add imports.
-    Use the function description to fully implement the business logic described there.
+    Do not add any additional comments or explanations.
+
   llmTemperature: 0.3
   llmMaxTokens: 512
   llmTopP: 1.0
