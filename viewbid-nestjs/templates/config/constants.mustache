@@ -1,6 +1,6 @@
 {{#models}}
 {{#model}}
-export class Constants {
+export class {{classname}}Constants {
     static readonly {{#lambda.uppercase}}{{classname}}{{/lambda.uppercase}}_NOT_FOUND_ERROR: number = 404; // must customize this error code
 }
 {{/model}}
