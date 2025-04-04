@@ -1,6 +1,8 @@
+{{#models}}
+{{#model}}
 import { Module } from '@nestjs/common';
 import { {{classname}}Controller } from './controllers/{{classVarName}}.controller';
-import { {{classname}}DbService } from './data/{{classVarName}}-db.service';
+import { {{classname}}DbService } from './data/{{classVarName}}.db';
 import { {{classname}}Handler } from './handlers/{{classVarName}}.handler';
 import { SharedModule } from '../shared/shared.module';
 
@@ -15,3 +17,5 @@ import { SharedModule } from '../shared/shared.module';
 })
 
 export class {{classname}}Module {}
+{{/model}}
+{{/models}}

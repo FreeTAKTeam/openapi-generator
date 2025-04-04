@@ -1,4 +1,7 @@
 {{>licenseInfo}}
+
+import { IsEmail, IsOptional, IsBoolean, IsString, IsIn, Length, IsNumber } from 'class-validator';
+
 {{#models}}
 {{#model}}
 export class {{classname}}Dto {
