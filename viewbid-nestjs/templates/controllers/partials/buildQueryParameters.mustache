@@ -1,0 +1,32 @@
+{{!-
+  Builds the URLSearchParams object for query parameters.
+  Handles different array collection formats and data types (like DateTime).
+
+  Context: Inside an operation block, within the method body,
+           only included if the operation has query parameters.
+-}}
+        let queryParameters = new URLSearchParams();
+{{#queryParams}}
+        {{#isArray}}
+        if ({{paramName}}) {
+        {{#isCollectionFormatMulti}}
+            {{paramName}}.forEach((element) => {
+                queryParameters.append('{{baseName}}', <any>element);
+            })
+        {{/isCollectionFormatMulti}}
+        {{^isCollectionFormatMulti}}
+            queryParameters.append('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
+        {{/isCollectionFormatMulti}}
+        }
+        {{/isArray}}
+        {{^isArray}}
+        if ({{paramName}} !== undefined && {{paramName}} !== null) {
+        {{#isDateTime}}
+            queryParameters.append('{{baseName}}', (<any>{{paramName}}).toISOString());
+        {{/isDateTime}}
+        {{^isDateTime}}
+            queryParameters.append('{{baseName}}', <any>{{paramName}});
+        {{/isDateTime}}
+        }
+        {{/isArray}}
+{{/queryParams}}

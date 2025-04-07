@@ -43,107 +43,35 @@ export class {{classname}}Controller extends BaseController<
      * @param {*} [{{nickname}}Opts.config] Override http request option.
      */
     @{{#lambda.pascalcase}}{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}{{/lambda.pascalcase}}('{{path}}')
-    {{#useSingleRequestParameter}}
     {{#vendorExtensions}}
+    {{#isPrivate}}private{{/isPrivate}}{{^isPrivate}}public{{/isPrivate}} {{nickname}}({{> controllers/partials/methodParameters }}): Observable<any> {
+        {{#isPublic}}
+        // Regular implementation - Handled by BaseController or specific handler logic
+        {{/isPublic}}
+        {{#isPrivate}}
+        // This is an Internal method only, not exposed in the API
+        // Implementation likely resides in the handler or is omitted from generation
+        {{/isPrivate}}
+        {{#isPackage}}
+        // TODO: this method has been sent to an LLM to be generated and needs review.
+        // Delete this comment afterward.
+        // {{operationId}} - PACKAGE SCOPE
+        // Description: {{notes}}
+        {{{llmImplementation}}}
+        {{/isPackage}}
 
-    {{#isPublic}}
-    public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
-    // Regular implementation
-    {{/isPublic}}
+        // Parameter processing (destructuring, validation)
+        {{> controllers/partials/parameterProcessing }}
 
-    {{#isPrivate}}
-    private {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
-    // this is an Internal method only, not exposed in the API
-    {{/isPrivate}}
+        // Query parameter construction
+        {{#hasQueryParams}}
+        {{> controllers/partials/buildQueryParameters }}
+        {{/hasQueryParams}}
 
-    {{#isPackage}}
-    // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
-    /// delete this comment afterward
-    // {{operationId}} - PACKAGE SCOPE
-    // Description: {{notes}}
-    public {{nickname}}({{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
-    {{{llmImplementation}}}
-    {{/isPackage}}
-
+        // TODO: Add call to the actual handler method, passing processed parameters
+        // Example: return this.handler.{{nickname}}(...);
+    } // End of method {{nickname}}
     {{/vendorExtensions}}
-    {{/useSingleRequestParameter}}
-    {{^useSingleRequestParameter}}
-    {{#vendorExtensions}}
-
-    {{#isPublic}}
-    public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
-    // Regular implementation
-    {{/isPublic}}
-
-    {{#isPrivate}}
-    private {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
-    // this is an Internal method only, not exposed in the API
-    {{/isPrivate}}
-
-    {{#isPackage}}
-    // TODO: this method has been sent to an LLM to be generated and need to be reviewed.
-    /// delete this comment afterward
-    // {{operationId}} - PACKAGE SCOPE
-    // Description: {{notes}}
-    public {{nickname}}({{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}, {{/isConstEnumParam}}{{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }): Observable<any> {
-    {{{llmImplementation}}}
-    {{/isPackage}}
-
-    {{/vendorExtensions}}
-    {{/useSingleRequestParameter}}
-{{#allParams.0}}
-{{#useSingleRequestParameter}}
-        const {
-        {{#allParams}}
-            {{#vendorExtensions.x-param-has-sanitized-name}}'{{{baseName}}}': {{/vendorExtensions.x-param-has-sanitized-name}}{{paramName}},
-        {{/allParams}}
-        } = requestParameters;
-
-{{/useSingleRequestParameter}}
-{{/allParams.0}}
-{{#allParams}}
-{{#required}}
-        {{#isConstEnumParam}}
-        let {{paramName}} = {{{dataType}}};
-        {{/isConstEnumParam}}
-        {{^isConstEnumParam}}
-        if ({{paramName}} === null || {{paramName}} === undefined) {
-            throw new Error('Required parameter {{paramName}} was null or undefined when calling {{nickname}}.');
-        }
-
-        {{/isConstEnumParam}}
-{{/required}}
-{{/allParams}}
-{{#hasQueryParams}}
-        let queryParameters = new URLSearchParams();
-{{#queryParams}}
-        {{#isArray}}
-        if ({{paramName}}) {
-        {{#isCollectionFormatMulti}}
-            {{paramName}}.forEach((element) => {
-                queryParameters.append('{{baseName}}', <any>element);
-            })
-        {{/isCollectionFormatMulti}}
-        {{^isCollectionFormatMulti}}
-            queryParameters.append('{{baseName}}', {{paramName}}.join(COLLECTION_FORMATS['{{collectionFormat}}']));
-        {{/isCollectionFormatMulti}}
-        }
-        {{/isArray}}
-        {{^isArray}}
-        if ({{paramName}} !== undefined && {{paramName}} !== null) {
-        {{#isDateTime}}
-            queryParameters.append('{{baseName}}', (<any>{{paramName}}).toISOString());
-        {{/isDateTime}}
-        {{^isDateTime}}
-            queryParameters.append('{{baseName}}', <any>{{paramName}});
-        {{/isDateTime}}
-        }
-        {{/isArray}}
-{{/queryParams}}
-
-{{/hasQueryParams}}
-
-    }
 {{/operation}}
 }
 {{/operations}}

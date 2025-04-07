@@ -1,0 +1,30 @@
+{{!-
+  Handles parameter processing at the start of the method body.
+  - Destructures parameters from the request object if useSingleRequestParameter is true.
+  - Validates that required parameters are not null or undefined.
+
+  Context: Inside an operation block, within the method body.
+-}}
+{{#allParams.0}}
+{{#useSingleRequestParameter}}
+        const {
+        {{#allParams}}
+            {{#vendorExtensions.x-param-has-sanitized-name}}'{{{baseName}}}': {{/vendorExtensions.x-param-has-sanitized-name}}{{paramName}},
+        {{/allParams}}
+        } = requestParameters;
+
+{{/useSingleRequestParameter}}
+{{/allParams.0}}
+{{#allParams}}
+{{#required}}
+        {{#isConstEnumParam}}
+        // Constant enum parameter validation (if needed) could go here
+        // let {{paramName}} = {{{dataType}}}; // Example if initialization is needed
+        {{/isConstEnumParam}}
+        {{^isConstEnumParam}}
+        if ({{paramName}} === null || {{paramName}} === undefined) {
+            throw new Error('Required parameter {{paramName}} was null or undefined when calling {{nickname}}.');
+        }
+        {{/isConstEnumParam}}
+{{/required}}
+{{/allParams}}

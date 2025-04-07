@@ -1,0 +1,13 @@
+{{!-
+  Generates the parameter list for a controller method.
+  Handles the difference between using a single request parameter object
+  and individual parameters.
+
+  Context: Inside an operation block.
+-}}
+{{#useSingleRequestParameter}}
+{{#allParams.0}}requestParameters: {{classname}}{{operationIdCamelCase}}Request, {{/allParams.0}}{{nickname}}Opts?: { config?: AxiosRequestConfig }
+{{/useSingleRequestParameter}}
+{{^useSingleRequestParameter}}
+{{#allParams}}{{^isConstEnumParam}}{{paramName}}{{^required}}?{{/required}}: {{{dataType}}}{{/isConstEnumParam}}, {{/allParams}}{{nickname}}Opts?: { config?: AxiosRequestConfig }
+{{/useSingleRequestParameter}}
