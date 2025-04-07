@@ -4,6 +4,7 @@ additionalProperties:
   artifactId: viewbid-nestjs
   dateLibrary: date
   camelCaseFileNaming: "true"
+  dbProvider: postgresql
   # LLM Configuration for LevioLLMService
   llmApiEndpoint: "https://api.openai.com/v1/chat/completions"
   llmModel: "gpt-4o"
@@ -69,7 +70,7 @@ files:
     templateType: Model
     destinationFilename: .constants.ts
     folder: config
-  model.prisma.mustache:
+  prisma.mustache:
     templateType: Model
     destinationFilename: .prisma
     folder: .

@@ -1,0 +1,67 @@
+// Prisma Schema generated from OpenAPI specification
+// Review and adjust the generated schema, especially relations and database-specific types/attributes.
+
+datasource db {
+  provider = "{{dbProvider}}" // e.g., postgresql, mysql, sqlite, sqlserver, mongodb
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  {{#outputDir}}output = "{{.}}/client"{{/outputDir}}
+  {{#binaryTargets}}binaryTargets = [{{#.}}"{{.}}"{{^-last}}, {{/-last}}{{/.}}]{{/binaryTargets}} // e.g., ["native", "linux-musl-openssl-3.0.x"]
+  {{#previewFeatures}}previewFeatures = [{{#.}}"{{.}}"{{^-last}}, {{/-last}}{{/.}}]{{/previewFeatures}} // e.g., ["tracing"]
+}
+
+{{>licenseInfo}}
+
+{{#models}}
+{{#model}}
+{{#description}}
+/// {{{description}}}
+{{/description}}
+model {{classname}} {
+  {{#vars}}
+  {{#description}}
+  /// {{{description}}}
+  {{/description}}
+  {{name}} {{#isEnum}}{{enumName}}{{/isEnum}}{{^isEnum}}{{#isDateTime}}DateTime{{/isDateTime}}{{^isDateTime}}{{#isFloat}}Float{{/isFloat}}{{^isFloat}}{{#isDecimal}}Decimal{{/isDecimal}}{{^isDecimal}}{{#isJson}}Json{{/isJson}}{{^isJson}}{{#isByteArray}}Bytes{{/isByteArray}}{{^isByteArray}}{{#isString}}String{{/isString}}{{^isString}}{{#isInteger}}Int{{/isInteger}}{{^isInteger}}{{#isLong}}BigInt{{/isLong}}{{^isLong}}{{#isNumber}}Float{{/isNumber}}{{^isNumber}}{{#isBoolean}}Boolean{{/isBoolean}}{{^isBoolean}}{{dataType}}{{/isBoolean}}{{/isNumber}}{{/isLong}}{{/isInteger}}{{/isString}}{{/isByteArray}}{{/isJson}}{{/isDecimal}}{{/isFloat}}{{/isDateTime}}{{/isEnum}}{{#isList}}[]{{/isList}}{{^required}}?{{/required}} {{#isId}}@id @default(uuid()){{/isId}}{{^isId}}{{#isUnique}} @unique{{/isUnique}}{{/isId}}{{#relation}} @relation(fields: [{{relationField}}], references: [{{relationReference}}]){{/relation}}{{#required}}{{#defaultValue}} @default({{{.}}}){{/defaultValue}}{{/required}} {{#map}}@map("{{.}}"){{/map}} // Add @db.* attributes manually if needed, e.g. @db.VarChar(255) or @db.Decimal(10, 2)
+  {{/vars}}
+
+  {{#hasRelations}}
+  // --- Relations ---
+  // Verify auto-generated relations below or define manually based on schema structure.
+  // Example: related{{RelationModelName}} {{RelationModelName}}? @relation(fields: [{{lowercaseRelationModelName}}Id], references: [id])
+  // Example: related{{RelationModelName}}s {{RelationModelName}}[]
+
+  {{/hasRelations}}
+  {{#generateAuditFields}}
+
+  // --- Audit Fields (Common Pattern - Add if needed) ---
+  // createdOn DateTime  @default(now())
+  // updatedOn DateTime  @updatedAt
+  // deletedOn DateTime? // For soft deletes
+
+  // createdBy String? // Or specific User/Account type relation
+  // updatedBy String? // Or specific User/Account type relation
+  // deletedBy String? // Or specific User/Account type relation
+  {{/generateAuditFields}}
+  {{#modelMap}}@@map("{{.}}"){{/modelMap}}
+}
+{{/model}}
+{{/models}}
+
+{{#enums}}
+{{#enum}}
+{{#description}}
+/// {{{description}}}
+{{/description}}
+enum {{enumName}} {
+  {{#allowableValues}}
+  {{#enumVars}}
+  {{name}} {{#enumValueMap}}@map("{{.}}"){{/enumValueMap}}
+  {{/enumVars}}
+  {{/allowableValues}}
+}
+{{/enum}}
+{{/enums}}
