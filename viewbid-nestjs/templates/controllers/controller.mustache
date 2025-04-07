@@ -4,11 +4,11 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Req, Use
 import { BaseController } from '@mvc/controllers/base.controller';
 import { AxiosRequestConfig } from 'axios';
 import { Observable } from 'rxjs';
-import { {{classname}}Handler } from '../handlers/{{classVarName}}.handler';
-import { {{classname}}Request } from '../http/requests/{{classVarName}}.request';
-import { {{classname}}Dto } from '../dtos/{{classVarName}}.dto';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler } from '../handlers/{{classVarName}}.handler';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request } from '../http/requests/{{classVarName}}.request';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
 import { {{classname}}ListResponse } from '../http/responses/{{classVarName}}-list.response';
-import { {{classname}}Response } from '../http/responses/{{classVarName}}.response';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response } from '../http/responses/{{classVarName}}.response';
 
 {{#description}}
 /**
@@ -17,15 +17,14 @@ import { {{classname}}Response } from '../http/responses/{{classVarName}}.respon
 {{/description}}
 @Controller('{{classname}}')
 export class {{classname}}Controller extends BaseController<
-    {{classname}}Handler,
-    {{classname}}Request,
-    {{classname}}Dto,
-    {{classname}}Response,
-    {{classname}}ListResponse,
-    {{classname}}Dto
+    {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler,
+    {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request,
+    {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto,
+    {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response,
+    {{classname}}ListResponse
     > {
-    constructor(handler: {{classname}}Handler) {
-        super(handler, {{classname}}Dto, {{classname}}Response, {{classname}}ListResponse);
+    constructor(handler: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler) {
+        super(handler, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response, {{classname}}ListResponse);
     }
 {{#operations}}
 {{#operation}}
