@@ -28,8 +28,8 @@ export class {{classname}}DbService extends BaseDbService<Prisma.{{classname}}De
      */
     async {{nickname}}({{#allParams}}{{paramName}}: {{dataType}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<any> { // TODO: Adjust return type
         // TODO: Implement database logic for {{nickname}} using this.delegate (Prisma client)
-        // Example: return await this.delegate.findUnique({ where: { id: ... } });
-        // Example: return await this.delegate.create({ data: { ... } });
+        // Example: return await this.table.findUnique({ where: { id: ... } });
+        // Example: return await this.table.create({ data: { ... } });
         this.logger.log(`Executing DB operation {{nickname}} with params: ${{=<% %>=}}{<%& JSON.stringify(arguments) %>}<%={{ }}=%>`);
         throw new Error('DB method {{nickname}} not implemented.');
     }
