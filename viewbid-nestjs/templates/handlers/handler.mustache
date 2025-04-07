@@ -1,17 +1,28 @@
 {{>licenseInfo}}
 
-{{#models}}
-{{#model}}
 import { Injectable } from '@nestjs/common';
 import { BaseHandler } from '@mvc/handlers/base.handler';
-import { {{classname}}DbService } from '../data/{{classVarName}}.db';
-import { {{classname}}Dto } from '../dtos/{{classVarName}}.dto';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}DbService } from '../data/{{classVarName}}.db';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
 
 @Injectable()
 export class {{classname}}Handler extends BaseHandler<{{classname}}DbService, {{classname}}Dto, {{classname}}Dto> {
-    constructor(dbService: {{classname}}DbService) {
+    constructor(dbService: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}DbService) {
         super(dbService);
     }
+
+    {{#operations}}
+    {{#operation}}
+    /**
+     * {{summary}}
+     * {{notes}}
+     {{#allParams}}* @param {{paramName}} {{description}}
+     {{/allParams}}
+     */
+    async {{nickname}}({{#allParams}}{{paramName}}: {{dataType}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<any> {
+        return await this.dbService.{{nickname}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
+    }
+
+    {{/operation}}
+    {{/operations}}
 }
-{{/model}}
-{{/models}}

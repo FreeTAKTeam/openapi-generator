@@ -1,23 +1,39 @@
 {{>licenseInfo}}
 
-{{#models}}
-{{#model}}
 import { Injectable } from '@nestjs/common';
 import { BaseDbService } from '@mvc/data/base-db.service';
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "@prisma";
-import { {{classname}}Dto } from '../dtos/{{classVarName}}.dto';
-import { {{classname}}NotFoundError } from '../exceptions/{{classVarName}}-not-found-error';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}NotFoundError } from '../exceptions/{{classVarName}}-not-found-error';
 
 @Injectable()
-export class {{classname}}DbService extends BaseDbService<Prisma.{{classname}}Delegate, {{classname}}Dto, {{classname}}Dto> {
+export class {{classname}}DbService extends BaseDbService<Prisma.{{classname}}Delegate, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto> {
     constructor(prisma: PrismaService) {
-        super({{classname}}Dto, prisma.{{classname}});
+        super({{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, prisma.{{classname}});
     }
 
     throw404(id: string): never {
-        throw new {{classname}}NotFoundError(id);
+        throw new {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}NotFoundError(id);
     }
+
+    {{#operations}}
+    {{#operation}}
+    /**
+     * {{summary}} - Database interaction logic
+     * {{notes}}
+     {{#allParams}}* @param {{paramName}} {{description}}
+     {{/allParams}}
+     * @returns // TODO: Define appropriate return type based on Prisma operation
+     */
+    async {{nickname}}({{#allParams}}{{paramName}}: {{dataType}}{{^-last}}, {{/-last}}{{/allParams}}): Promise<any> { // TODO: Adjust return type
+        // TODO: Implement database logic for {{nickname}} using this.delegate (Prisma client)
+        // Example: return await this.delegate.findUnique({ where: { id: ... } });
+        // Example: return await this.delegate.create({ data: { ... } });
+        this.logger.log(`Executing DB operation {{nickname}} with params: ${{=<% %>=}}{<%& JSON.stringify(arguments) %>}<%={{ }}=%>`);
+        throw new Error('DB method {{nickname}} not implemented.');
+    }
+
+    {{/operation}}
+    {{/operations}}
 }
-{{/model}}
-{{/models}}

@@ -34,7 +34,7 @@ files:
     destinationFilename: .controller.ts
     folder: controllers
   data/db.mustache:
-    templateType: Model
+    templateType: API
     destinationFilename: .db.ts
     folder: data
   dtos/dto.mustache:
@@ -46,7 +46,7 @@ files:
     destinationFilename: -not-found-error.ts
     folder: exceptions
   handlers/handler.mustache:
-    templateType: Model
+    templateType: API
     destinationFilename: .handler.ts
     folder: handlers
   http/requests/request.mustache:
