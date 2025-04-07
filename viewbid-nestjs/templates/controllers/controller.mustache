@@ -2,6 +2,7 @@
 
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { BaseController } from '@mvc/controllers/base.controller';
+import { ErrorResponse } from '@mvc/http/responses/error-response';
 import { AxiosRequestConfig } from 'axios';
 import { Observable } from 'rxjs';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler } from '../handlers/{{classVarName}}.handler';
@@ -24,7 +25,12 @@ export class {{classname}}Controller extends BaseController<
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse
     > {
     constructor(handler: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler) {
-        super(handler, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse);
+        super(
+            handler,
+            {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto,
+            {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response,
+            {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse
+        );
     }
 {{#operations}}
 {{#operation}}
@@ -44,33 +50,29 @@ export class {{classname}}Controller extends BaseController<
      */
     @{{#lambda.pascalcase}}{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}{{/lambda.pascalcase}}('{{path}}')
     {{#vendorExtensions}}
-    {{#isPrivate}}private{{/isPrivate}}{{^isPrivate}}public{{/isPrivate}} {{nickname}}({{> controllers/partials/methodParameters }}): Observable<any> {
-        {{#isPublic}}
-        // Regular implementation - Handled by BaseController or specific handler logic
-        {{/isPublic}}
-        {{#isPrivate}}
-        // This is an Internal method only, not exposed in the API
-        // Implementation likely resides in the handler or is omitted from generation
-        {{/isPrivate}}
-        {{#isPackage}}
-        // TODO: this method has been sent to an LLM to be generated and needs review.
-        // Delete this comment afterward.
-        // {{operationId}} - PACKAGE SCOPE
-        // Description: {{notes}}
-        {{{llmImplementation}}}
-        {{/isPackage}}
+    async {{nickname}}({{> controllers/partials/methodParameters }}): Promise<{{#returnType}}{{{.}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
+        try {
+            {{> controllers/partials/parameterProcessing }}
 
-        // Parameter processing (destructuring, validation)
-        {{> controllers/partials/parameterProcessing }}
+            {{#hasQueryParams}}
+            {{> controllers/partials/buildQueryParameters }}
+            {{/hasQueryParams}}
 
-        // Query parameter construction
-        {{#hasQueryParams}}
-        {{> controllers/partials/buildQueryParameters }}
-        {{/hasQueryParams}}
+            const result = await this.handler.{{nickname}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
 
-        // TODO: Add call to the actual handler method, passing processed parameters
-        // Example: return this.handler.{{nickname}}(...);
-    } // End of method {{nickname}}
+            {{#returnType}}
+            return new {{.}}(result);
+            {{/returnType}}
+            {{^returnType}}
+            return result;
+            {{/returnType}}
+
+        } catch (error) {
+            this.logger.error(`Error in {{classname}}#{{nickname}}: ${error.message}`, error.stack);
+
+            return new ErrorResponse(error, '{{nickname}}');
+        }
+    }
     {{/vendorExtensions}}
 {{/operation}}
 }
