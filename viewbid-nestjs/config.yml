@@ -53,21 +53,21 @@ files:
     templateType: Model
     destinationFilename: .request.ts
     folder: http/requests
+  http/responses/list.mustache:
+    templateType: Model
+    destinationFilename: .list.response.ts
+    folder: http/responses
   http/responses/response.mustache:
     templateType: Model
     destinationFilename: .response.ts
-    folder: http/responses
-  http/responses/list.response.mustache:
-    templateType: Model
-    destinationFilename: -list.response.ts
     folder: http/responses
   module.mustache:
     templateType: Model
     destinationFilename: .module.ts
     folder: .
   config/constants.mustache:
-    templateType: SupportingFiles
-    destinationFilename: constants.ts
+    templateType: Model
+    destinationFilename: .constants.ts
     folder: config
   model.prisma.mustache:
     templateType: Model

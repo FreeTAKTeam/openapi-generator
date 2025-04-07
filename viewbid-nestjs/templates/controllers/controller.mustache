@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler } from '../handlers/{{classVarName}}.handler';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request } from '../http/requests/{{classVarName}}.request';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
-import { {{classname}}ListResponse } from '../http/responses/{{classVarName}}-list.response';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse } from '../http/responses/{{classVarName}}.list.response';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response } from '../http/responses/{{classVarName}}.response';
 
 {{#description}}
@@ -21,10 +21,10 @@ export class {{classname}}Controller extends BaseController<
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request,
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto,
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response,
-    {{classname}}ListResponse
+    {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse
     > {
     constructor(handler: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler) {
-        super(handler, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response, {{classname}}ListResponse);
+        super(handler, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse);
     }
 {{#operations}}
 {{#operation}}

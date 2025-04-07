@@ -3,11 +3,11 @@
 {{#models}}
 {{#model}}
 import { NotFoundSystemError } from '@mvc/exceptions/not-found-system.error';
-import { Constants } from  '../config/constants';
+import { {{classname}}Constants } from  '../config/{{classVarName}}.constants';
 
 export class {{classname}}NotFoundError extends NotFoundSystemError {
     constructor(id: string) {
-        super('No {{classname}} found with id ' + id, Constants.{{#lambda.uppercase}}{{classVarName}}{{/lambda.uppercase}}_NOT_FOUND_ERROR, id, '{{classname}}#not-found');
+        super('No {{classname}} found with id ' + id, {{classname}}Constants.{{#lambda.uppercase}}{{classVarName}}{{/lambda.uppercase}}_NOT_FOUND_ERROR, id, '{{classname}}#not-found');
     }
 }
 {{/model}}
