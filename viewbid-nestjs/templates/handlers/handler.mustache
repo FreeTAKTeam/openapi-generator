@@ -6,7 +6,7 @@ import { {{classname}}DbService } from '../data/{{classVarName}}.service.db';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
 
 @Injectable()
-export class {{classname}}Handler extends BaseHandler<{{classname}}DbService, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto> {
+export class {{classname}}Handler extends BaseHandler<{{classname}}DbService, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto> {
     constructor(dbService: {{classname}}DbService) {
         super(dbService);
     }

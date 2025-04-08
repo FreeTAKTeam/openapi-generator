@@ -24,14 +24,23 @@ export class {{classname}}Controller extends BaseController<
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response,
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse
     > {
+
     constructor(handler: {{classname}}Handler) {
-        super(
-            handler,
-            {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto,
-            {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response,
-            {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse
-        );
+        super(handler);
     }
+
+    createDtoFromRequest(request: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request): {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto {
+    return new {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto(request);
+    }
+
+    createResponseFromDto(dto: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto): {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response {
+    return new {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response(dto);
+    }
+
+    createResponseList(list: ListResultset<{{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto>): {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse {
+    return new {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse(list);
+    }
+
 {{#operations}}
 {{#operation}}
     {{#vendorExtensions}}
