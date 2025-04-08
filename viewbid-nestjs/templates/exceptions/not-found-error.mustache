@@ -2,10 +2,10 @@
 
 {{#models}}
 {{#model}}
-import { NotFoundSystemError } from '@mvc/exceptions/not-found-system.error';
+import { NotFoundViewbidError } from '@mvc/exceptions/not-found-viewbid.error';
 import { {{classname}}Constants } from  '../config/{{classVarName}}.constants';
 
-export class {{classname}}NotFoundError extends NotFoundSystemError {
+export class {{classname}}NotFoundError extends NotFoundViewbidError {
     constructor(id: string) {
         super('No {{classname}} found with id ' + id, {{classname}}Constants.{{#lambda.uppercase}}{{classVarName}}{{/lambda.uppercase}}_NOT_FOUND_ERROR, id, '{{classname}}#not-found');
     }
