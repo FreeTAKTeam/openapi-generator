@@ -2,13 +2,13 @@
 
 import { Injectable } from '@nestjs/common';
 import { BaseDbService } from '@mvc/data/base-db.service';
-import { Prisma } from "@prisma/client";
-import { PrismaService } from "@prisma";
+import { Prisma } from '@prisma/client';
+import { PrismaService } from '../../prisma/prisma.service';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}NotFoundError } from '../exceptions/{{classVarName}}-not-found-error';
 
 @Injectable()
-export class {{classname}}DbService extends BaseDbService<Prisma.{{classname}}Delegate, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto> {
+export class {{classname}}DbService extends BaseDbService<Prisma.{{classname}}Delegate<DefaultArgs>, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto> {
     constructor(prisma: PrismaService) {
         super({{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, prisma.{{classname}});
     }

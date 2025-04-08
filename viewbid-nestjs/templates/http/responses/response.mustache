@@ -3,10 +3,10 @@
 {{#models}}
 {{#model}}
 
-import { HttpResponse } from "@mvc/http/responses/http.response";
+import { Response } from '@mvc/http/responses/response';
 import { {{classname}}Dto } from '../../dtos/{{classVarName}}.dto';
 
-export class {{classname}}Response extends HttpResponse {
+export class {{classname}}Response extends Response {
     constructor(data: {{classname}}Dto, details?: object) {
         super(data, '{{classname}}', data.id, details);
     }
