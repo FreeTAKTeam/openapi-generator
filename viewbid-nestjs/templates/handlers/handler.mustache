@@ -2,12 +2,12 @@
 
 import { Injectable } from '@nestjs/common';
 import { BaseHandler } from '@mvc/handlers/base.handler';
-import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}DbService } from '../data/{{classVarName}}.db';
+import { {{classname}}DbService } from '../data/{{classVarName}}.service.db';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
 
 @Injectable()
-export class {{classname}}Handler extends BaseHandler<{{classname}}DbService, {{classname}}Dto, {{classname}}Dto> {
-    constructor(dbService: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}DbService) {
+export class {{classname}}Handler extends BaseHandler<{{classname}}DbService, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto, {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto> {
+    constructor(dbService: {{classname}}DbService) {
         super(dbService);
     }
 

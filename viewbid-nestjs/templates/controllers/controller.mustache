@@ -5,7 +5,7 @@ import { BaseController } from '@mvc/controllers/base.controller';
 import { ErrorResponse } from '@mvc/http/responses/error-response';
 import { AxiosRequestConfig } from 'axios';
 import { Observable } from 'rxjs';
-import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler } from '../handlers/{{classVarName}}.handler';
+import { {{classname}}Handler } from '../handlers/{{classVarName}}.service.handler';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request } from '../http/requests/{{classVarName}}.request';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse } from '../http/responses/{{classVarName}}.list.response';
@@ -18,13 +18,13 @@ import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response } 
 {{/description}}
 @Controller('{{classname}}')
 export class {{classname}}Controller extends BaseController<
-    {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler,
+    {{classname}}Handler,
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request,
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto,
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response,
     {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse
     > {
-    constructor(handler: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Handler) {
+    constructor(handler: {{classname}}Handler) {
         super(
             handler,
             {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto,
