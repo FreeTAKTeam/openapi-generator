@@ -1,0 +1,30 @@
+{{>licenseInfo}}
+
+import { Injectable } from '@nestjs/common';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
+import { {{classname}}Handler } from '../handlers/{{classVarName}}.service.handler';
+
+/**
+ * Factory for creating {{classname}} related objects.
+ * Encapsulates creation logic and potential transformations.
+ */
+@Injectable()
+export class {{classname}}Factory {
+  constructor(handler: {{classname}}Handler) {}
+
+  /**
+   * Creates a domain object or Prisma input object from a DTO.
+   * @param dto The data transfer object for {{classname}}.
+   * @returns The created domain object or Prisma input object. Adjust return type as needed.
+   */
+  createFromDto(dto: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto): any {
+    // Implement mapping logic from DTO to the target object
+    const creationInput: any = {
+      {{#vars}}
+      {{name}}: dto.{{name}}, // Basic 1:1 mapping example
+      {{/vars}}
+      // Add any transformations, default values, or complex logic here
+    };
+    return creationInput;
+  }
+}

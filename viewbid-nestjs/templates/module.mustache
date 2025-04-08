@@ -4,13 +4,15 @@ import { Module } from '@nestjs/common';
 import { {{classname}}Controller } from './controllers/{{classVarName}}.service.controller';
 import { {{classname}}DbService } from './data/{{classVarName}}.service.db';
 import { {{classname}}Handler } from './handlers/{{classVarName}}.service.handler';
+import { {{classname}}Factory } from './factories/{{classVarName}}.factory';
 
 @Module({
     controllers: [{{classname}}Controller],
     providers: [
         {{classname}}DbService,
-        {{classname}}Handler
-    ], // Provide the service and handler
+        {{classname}}Handler,
+        {{classname}}Factory
+    ], // Provide the service, handler, and factory
     exports: [], // Export the services for use in other modules
     imports: [], // Import any other modules needed
 })

@@ -50,6 +50,10 @@ files:
     templateType: API
     destinationFilename: .handler.ts
     folder: handlers
+  factories/factory.mustache:
+    templateType: API
+    destinationFilename: .factory.ts
+    folder: factories
   http/requests/request.mustache:
     templateType: Model
     destinationFilename: .request.ts
