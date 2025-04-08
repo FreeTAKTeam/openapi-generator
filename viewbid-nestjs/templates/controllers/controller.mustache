@@ -34,45 +34,13 @@ export class {{classname}}Controller extends BaseController<
     }
 {{#operations}}
 {{#operation}}
-    /**
-     * {{summary}}
-     * {{notes}}
-     {{#useSingleRequestParameter}}
-     {{#allParams.0}}
-     * @param {{=<% %>=}}{<%& classname %><%& operationIdCamelCase %>Request}<%={{ }}=%> requestParameters Request parameters.
-     {{/allParams.0}}
-     {{/useSingleRequestParameter}}
-     {{^useSingleRequestParameter}}
-     {{#allParams}}* @param {{paramName}} {{description}}
-     {{/allParams}}
-     {{/useSingleRequestParameter}}
-     * @param {*} [{{nickname}}Opts.config] Override http request option.
-     */
-    @{{#lambda.pascalcase}}{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}{{/lambda.pascalcase}}('{{path}}')
     {{#vendorExtensions}}
-    async {{nickname}}({{> controllers/partials/methodParameters }}): Promise<{{#returnType}}{{{.}}}{{/returnType}}{{^returnType}}any{{/returnType}}> {
-        try {
-            {{> controllers/partials/parameterProcessing }}
-
-            {{#hasQueryParams}}
-            {{> controllers/partials/buildQueryParameters }}
-            {{/hasQueryParams}}
-
-            const result = await this.handler.{{nickname}}({{#allParams}}{{paramName}}{{^-last}}, {{/-last}}{{/allParams}});
-
-            {{#returnType}}
-            return new {{.}}(result);
-            {{/returnType}}
-            {{^returnType}}
-            return result;
-            {{/returnType}}
-
-        } catch (error) {
-            this.logger.error(`Error in {{classname}}#{{nickname}}: ${error.message}`, error.stack);
-
-            return new ErrorResponse(error, '{{nickname}}');
-        }
-    }
+    {{> controllers/partials/methodDocumentation }}
+    {{#isPublic}}
+    @{{#lambda.pascalcase}}{{#lambda.lowercase}}{{httpMethod}}{{/lambda.lowercase}}{{/lambda.pascalcase}}('{{path}}')
+    {{/isPublic}}
+    {{#isPrivate}}private{{/isPrivate}}{{^isPrivate}}public{{/isPrivate}} async {{nickname}}({{> controllers/partials/methodParameters }}): Promise<{{#returnType}}{{{.}}}{{/returnType}}{{^returnType}}any{{/returnType}}>
+    {{> controllers/partials/methodBody }}
     {{/vendorExtensions}}
 {{/operation}}
 }

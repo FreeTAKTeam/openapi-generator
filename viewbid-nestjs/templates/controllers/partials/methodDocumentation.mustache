@@ -1,0 +1,19 @@
+/**
+ * {{summary}}{{#isPrivate}} (Internal){{/isPrivate}}{{#isPackage}} (Package Scope){{/isPackage}}
+ * {{notes}}
+ {{#isPackage}}
+ * TODO: this method has been marked for PACKAGE scope and may need review/adjustment. Delete this comment after review.
+ {{/isPackage}}
+ {{#useSingleRequestParameter}}
+ {{#allParams.0}}
+ * @param {{=<% %>=}}{<%& classname %><%& operationIdCamelCase %>Request}<%={{ }}=%> requestParameters Request parameters.
+ {{/allParams.0}}
+ {{/useSingleRequestParameter}}
+ {{^useSingleRequestParameter}}
+ {{#allParams}}* @param {{paramName}} {{description}}
+ {{/allParams}}
+ {{/useSingleRequestParameter}}
+ {{^isPrivate}}
+ * @param {*} [{{nickname}}Opts.config] Override http request option.
+ {{/isPrivate}}
+ */
