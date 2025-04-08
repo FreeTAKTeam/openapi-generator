@@ -17,7 +17,7 @@ export class {{classname}}Factory {
    * @param dto The data transfer object for {{classname}}.
    * @returns The created domain object or Prisma input object. Adjust return type as needed.
    */
-  createFromDto(dto: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto): any {
+  private createFromDto(dto: {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto): any {
     // Implement mapping logic from DTO to the target object
     const creationInput: any = {
       {{#vars}}
