@@ -89,6 +89,7 @@ paths:
           content:
             text/plain:
               schema:
+                type: string
     put:
       x-scope: private
       tags:
@@ -143,6 +144,13 @@ components:
             subscriptionkey:
               type: string
               description: >-
+    SubscribersHelper:
+      type: object
+      properties:
+        _placeholder:
+          type: string
+          description: "Placeholder schema to ensure related helper files (DTO, Request, Response) are generated."
+
     Error:
       description: Error
   parameters:
