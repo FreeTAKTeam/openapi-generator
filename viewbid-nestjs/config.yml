@@ -63,7 +63,7 @@ files:
     destinationFilename: .response.ts
     folder: http/responses
   module.mustache:
-    templateType: Model
+    templateType: API
     destinationFilename: .module.ts
     folder: .
   config/constants.mustache:

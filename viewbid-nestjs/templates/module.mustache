@@ -1,12 +1,9 @@
 {{>licenseInfo}}
 
-{{#models}}
-{{#model}}
 import { Module } from '@nestjs/common';
-import { {{classname}}Controller } from './controllers/{{classVarName}}.controller';
-import { {{classname}}DbService } from './data/{{classVarName}}.db';
-import { {{classname}}Handler } from './handlers/{{classVarName}}.handler';
-import { SharedModule } from '../shared/shared.module';
+import { {{classname}}Controller } from './controllers/{{classVarName}}.service.controller';
+import { {{classname}}DbService } from './data/{{classVarName}}.service.db';
+import { {{classname}}Handler } from './handlers/{{classVarName}}.service.handler';
 
 @Module({
     controllers: [{{classname}}Controller],
@@ -15,9 +12,7 @@ import { SharedModule } from '../shared/shared.module';
         {{classname}}Handler
     ], // Provide the service and handler
     exports: [], // Export the services for use in other modules
-    imports: [SharedModule],
+    imports: [], // Import any other modules needed
 })
 
 export class {{classname}}Module {}
-{{/model}}
-{{/models}}
