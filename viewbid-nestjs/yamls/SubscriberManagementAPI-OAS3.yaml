@@ -1,0 +1,795 @@
+openapi: 3.0.1
+info:
+  title: SubscriberManagementAPI
+  version: '25.04.03'
+  description: >-
+    The SubscriberManagementAPI, part of ViewBid.ca Auction application provides functionalities to manage subscriber data. 
+    
+    Specifically, it supports creating, updating, retrieving, and deleting subscriber records through standard CRUD operations. Additionally, it offers specialized example methods for administrative tasks such as calculating the number of active ("good") subscribers and automated cleanup of inactive subscriber accounts (unused for 60 days or more). 
+  contact:
+    name: Will Taylor-Melanson
+    url: https:/viewbid.ca
+    email: willdev@viewbid.ca
+  license:
+    name: viewbid.ca
+tags:
+  - name: Subscriber
+paths:
+  /organizations:
+    post:
+      x-scope: public
+      tags:
+       - organizations
+      description: >-
+      summary: Creates a new organizations record.
+      operationId: Createorganizations
+      requestBody:
+        $ref: '#/components/requestBodies/organizations'
+      responses:
+        '200':
+          $ref: '#/components/responses/200organizations_post'
+    delete:
+      x-scope: public
+      tags:
+       - organizations
+      description: >-
+      summary: Deletes an existing organizations record based on the provided ID.
+      operationId: Deleteorganizations
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200organizations_delete'
+    get:
+      x-scope: public
+      tags:
+       - organizations
+      description: >-
+      summary: Retrieves a list of all organizations
+      operationId: Listorganizations
+      responses:
+        '200':
+          $ref: '#/components/responses/200organizations_get'
+    patch:
+      x-scope: public
+      tags:
+       - organizations
+      description: >-
+      summary: Updates an existing organizations record.
+      operationId: Patchorganizations
+      requestBody:
+        $ref: '#/components/requestBodies/organizations'
+      responses:
+        '200':
+          $ref: '#/components/responses/200organizations_patch'
+  /users:
+    post:
+      x-scope: public
+      tags:
+       - users
+      description: >-
+      summary: Creates a new users record.
+      operationId: Createusers
+      requestBody:
+        $ref: '#/components/requestBodies/users'
+      responses:
+        '200':
+          $ref: '#/components/responses/200users_post'
+    delete:
+      x-scope: public
+      tags:
+       - users
+      description: >-
+      summary: Deletes an existing users record based on the provided ID.
+      operationId: Deleteusers
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200users_delete'
+    get:
+      x-scope: public
+      tags:
+       - users
+      description: >-
+      summary: Retrieves a list of all users
+      operationId: Listusers
+      responses:
+        '200':
+          $ref: '#/components/responses/200users_get'
+    patch:
+      x-scope: public
+      tags:
+       - users
+      description: >-
+      summary: Updates an existing users record.
+      operationId: Patchusers
+      requestBody:
+        $ref: '#/components/requestBodies/users'
+      responses:
+        '200':
+          $ref: '#/components/responses/200users_patch'
+  /subscribers:
+    post:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Creates a new subscribers record.
+      operationId: Createsubscribers
+      requestBody:
+        $ref: '#/components/requestBodies/subscribers'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_post'
+    delete:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Deletes an existing subscribers record based on the provided ID.
+      operationId: Deletesubscribers
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_delete'
+    get:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Retrieves a list of all subscribers
+      operationId: Listsubscribers
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_get'
+    patch:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: Updates an existing subscribers record.
+      operationId: Patchsubscribers
+      requestBody:
+        $ref: '#/components/requestBodies/subscribers'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_patch'
+  /organizations/{id}:
+    get:
+      x-scope: public
+      tags:
+       - organizations
+      description: >-
+      summary: retrieve an existing organizations record based on the provided ID.
+      operationId: Retreiveorganizations
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200organizations_get'
+  /users/{id}:
+    get:
+      x-scope: public
+      tags:
+       - users
+      description: >-
+      summary: retrieve an existing users record based on the provided ID.
+      operationId: Retreiveusers
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200users_get'
+  /subscribers/{id}:
+    get:
+      x-scope: public
+      tags:
+       - subscribers
+      description: >-
+      summary: retrieve an existing subscribers record based on the provided ID.
+      operationId: Retreivesubscribers
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200subscribers_get'
+  /subscribersHelper:
+    get:
+      x-scope: package
+      tags:
+       - subscribersHelper
+      description: >-
+        this example method query the database and retrieve a integer of subscribers to a Auction Lot, evaluate that integer: if the number of subscribers are more than 100 return "Good Auction"; if the number of subscribers is between 99 and 75 return "Medium Auction"; finally if the number of subscribers is less than 75 return "Bad Auction"
+        @param: autionLot
+        return: integer
+      operationId: CalculateGoodSubscriberNumber
+      responses:
+        '200':
+          description: simple text based return value
+          content:
+            text/plain:
+              schema:
+    post:
+      x-scope: package
+      tags:
+       - subscribersHelper
+      description: >-
+        this function named generateSubscriptionKey , accepts a subscriber object as input and returns a unique, cryptographically secure subscription key as a string. The function should meet the following requirements:
+        
+        Input:
+        A subscriber object 
+        Assume the object contains at least a unique identifier (such as id).
+        Operation:
+        Use industry-standard cryptographic methods to generate the key.
+        Incorporate a cryptographically secure random nonce or salt combined with the subscriber's unique identifier.
+        Apply a secure hash function (for example, SHA-256) to the concatenated data to produce the final key.
+        
+        Output:
+        Return the generated subscription key as a string.
+        
+        Additional Requirements:
+        Include proper error handling.
+        Add inline comments to explain key steps in the code.
+        Provide an example usage of the function.
+        
+      operationId: generateSubscriptionKey
+      requestBody:
+        $ref: '#/components/requestBodies/subscribers'
+      responses:
+        '200':
+          description: simple text based return value
+          content:
+            text/plain:
+              schema:
+                type: string
+    put:
+      x-scope: private
+      tags:
+       - subscribersHelper
+      description: >-
+        this is a <b>private </b>method, not be exposed in the API, delete subscribers that are not active since 60 days from the current day. It returns a boolean (true for success, false for error)
+      operationId: CleanUpSubscriberHelper
+      requestBody:
+        $ref: '#/components/requestBodies/subscribers'
+      responses:
+        '200':
+          description: simple text based return value
+          content:
+            text/plain:
+              schema:
+                type: boolean
+components:
+  schemas:
+    auctionlots:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+            auctionsid:
+              type: string
+              description: >-
+            lotsid:
+              type: string
+              description: >-
+            number:
+              type: integer
+              description: >-
+            displayorder:
+              type: integer
+              description: >-
+            status:
+              type: string
+              description: >-
+            todatetime:
+              type: string
+              format: date
+              description: >-
+            (auctionsId = id):
+              description: >-
+              nullable: true
+              type: string
+              x-reference: '#/components/schemas/auctions'
+            (lotsId = id):
+              description: >-
+              nullable: true
+              type: string
+              x-reference: '#/components/schemas/lots'
+    auctions:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+            name:
+              type: string
+              description: >-
+            description:
+              type: string
+              description: >-
+            fromdatetime:
+              type: string
+              format: date
+              description: >-
+            todatetime:
+              type: string
+              format: date
+              description: >-
+            isactive:
+              type: string
+              description: >-
+            status:
+              type: string
+              description: >-
+            numlots:
+              type: integer
+              description: >-
+            isship:
+              type: string
+              description: >-
+            isproxybid:
+              type: string
+              description: >-
+            isreservable:
+              type: string
+              description: >-
+            isbuynow:
+              type: string
+              description: >-
+            ismakeoffer:
+              type: string
+              description: >-
+            isquickbid:
+              type: string
+              description: >-
+            isinlinebidding:
+              type: string
+              description: >-
+            islargebidconfirm:
+              type: string
+              description: >-
+            tags:
+              type: string
+              description: >-
+            code:
+              type: string
+              description: >-
+            invoicetemplatesid:
+              type: string
+              description: >-
+            buyerpremium:
+              type: number
+              description: >-
+            featuredisplayorder:
+              type: integer
+              description: >-
+            paymenttypes:
+              type: string
+              description: >-
+            thumbnailid:
+              type: string
+              description: >-
+    lots:
+      allOf:
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+            title:
+              type: string
+              description: >-
+            description:
+              type: string
+              description: >-
+            status:
+              type: string
+              description: >-
+            code:
+              type: string
+              description: >-
+            reserveamount:
+              type: number
+              description: >-
+            tags:
+              type: string
+              description: >-
+            istaxable:
+              type: string
+              description: >-
+            condition:
+              type: string
+              description: >-
+            category:
+              type: string
+              description: >-
+            region:
+              type: string
+              description: >-
+            thumbnailid:
+              type: string
+              description: >-
+            pickuplocation:
+              type: string
+              description: >-
+            inputdevice:
+              type: string
+              description: >-
+            inputmethod:
+              type: string
+              description: >-
+    organizations:
+      allOf:
+        - $ref: '#/components/schemas/viewBidBase'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+            name:
+              type: string
+              description: >-
+            number:
+              type: string
+              description: >-
+            taxtype:
+              type: string
+              description: >-
+            organizationtype:
+              type: string
+              description: >-
+            representativeid:
+              type: string
+              description: >-
+            representativefullname:
+              type: string
+              description: >-
+            representative:
+              description: >-
+              nullable: true
+              type: array
+              items:
+                type: string
+                x-reference: '#/components/schemas/users'
+    users:
+      allOf:
+        - $ref: '#/components/schemas/viewBidBase'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+            firstname:
+              type: string
+              description: >-
+            lastname:
+              type: string
+              description: >-
+            username:
+              type: string
+              description: >-
+            ipaddress:
+              type: string
+              description: >-
+            status:
+              description: >-
+              $ref: '#/components/schemas/UserStatus'
+    viewBidBase:
+      allOf:
+        - type: object
+          properties:
+            createdon:
+              type: string
+              format: date
+              description: >-
+                datetime in which this object was create
+            createdby:
+              type: string
+              description: >-
+                user name irresponsible for the operation
+            updatedon:
+              type: string
+              format: date
+              description: >-
+                datetime in which this object was last updated
+            updatedby:
+              type: string
+              description: >-
+                user name irresponsible for the operation
+            deletedon:
+              type: string
+              format: date
+              description: >-
+                datetime in which this object was deleted
+            deletedby:
+              type: string
+              description: >-
+                user name irresponsible for the operation
+    subscribers:
+      allOf:
+        - $ref: '#/components/schemas/viewBidBase'
+        - type: object
+          properties:
+            id:
+              type: string
+              description: >-
+            accountsid:
+              type: string
+              description: >-
+                Maintains subscriber-related information, tying each subscriber to an account.
+                
+                lots:
+                auctionlots: Acts as a linking class that assigns lots to auctions and controls scheduling or indexing within those auctions.
+                
+                auctions: Outlines each auction’s identity and timeframe, referencing multiple lots via auctionlots.
+            subscriptionkey:
+              type: string
+              description: >-
+                a generate key
+            objectInfo:
+              description: >-
+              nullable: true
+              type: string
+              x-reference: '#/components/schemas/viewBidBase'
+            user_Associates_subscribers:
+              description: >-
+              nullable: true
+              type: string
+              x-reference: '#/components/schemas/users'
+    Error:
+      description: Error
+    UserStatus:
+      enum:
+        - Pending
+        - Active
+        - Denied
+      type: string
+      description: >-
+        ('Pending','Active','Denied')
+  parameters:
+    ID:
+      name: id
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: query
+    id:
+      name: id
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: path
+  responses:
+    200organizations_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/organizations'
+    200organizations_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/organizations'
+    200organizations_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/organizations'
+    200organizations_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/organizations'
+    200users_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/users'
+    200users_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/users'
+    200users_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/users'
+    200users_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/users'
+    200subscribers_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    200subscribers_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    200subscribers_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    200subscribers_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+    '200':
+      description: OK
+    '201':
+      description: Added Object
+    '202':
+      description: Accepted
+    '204':
+      description: Deleted
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '405':
+      description: Method Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '501':
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '503':
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    'Error':
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  requestBodies:
+    auctionlots:
+      description: >-
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/auctionlots'
+      required: true
+    subscribers:
+      description: >-
+        Represents individuals or entities subscribing to a service. The user reference ties each subscriber to a corresponding user record, linking user-related details (e.g., name, role).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/subscribers'
+      required: true
+    organizations:
+      description: >-
+        Defines organizations within the system. Each organization can have a designated representative (tied via representativeIdNumber to the users class), along with organizational details like a name, type, and unique identifier.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/organizations'
+      required: true
+    users:
+      description: >-
+        Stores account-level details for users. This class captures personal and login information (e.g., username, IP address). Other classes (e.g., subscribers, organizations) may reference users for identification or representation.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/users'
+      required: true
+x-uml-relationships:
+  
+  - name: "(auctionsId = id)"
+    x-ea-guid: 698CCB83-F442-466d-BDD6-7255402BEEE6
+    source:
+      schema: "#/components/schemas/auctionlots"
+      multiplicity: "0..-1"
+      navigability: Non-Navigable
+    target:
+      schema: "#/components/schemas/auctions"
+      multiplicity: "1..1"
+      navigability: Navigable
+  - name: "(lotsId = id)"
+    x-ea-guid: DAED073A-E5D1-43fb-AA70-9E137D851F10
+    source:
+      schema: "#/components/schemas/auctionlots"
+      multiplicity: "0..-1"
+      navigability: Non-Navigable
+    target:
+      schema: "#/components/schemas/lots"
+      multiplicity: "1..1"
+      navigability: Navigable
+  - name: "representative"
+    x-ea-guid: A168ED1B-9952-4c17-82C1-0B13C8A83056
+    source:
+      schema: "#/components/schemas/organizations"
+      multiplicity: "1..1"
+      navigability: Non-Navigable
+    target:
+      schema: "#/components/schemas/users"
+      multiplicity: "1..-1"
+      navigability: Navigable
+  - name: "objectInfo"
+    x-ea-guid: 17D0443B-215D-40ab-B659-CC2B1E3072B7
+    source:
+      schema: "#/components/schemas/subscribers"
+      multiplicity: "1..1"
+      navigability: 
+    target:
+      schema: "#/components/schemas/viewBidBase"
+      multiplicity: "1..1"
+      navigability: 
+  - name: "user_Associates_subscribers"
+    x-ea-guid: 5BE6652C-45F9-488e-B0D1-27B6BED14DDA
+    source:
+      schema: "#/components/schemas/subscribers"
+      multiplicity: "1..1"
+      navigability: Unspecified
+    target:
+      schema: "#/components/schemas/users"
+      multiplicity: "1..1"
+      navigability: Unspecified
+
