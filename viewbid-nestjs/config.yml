@@ -20,7 +20,7 @@ additionalProperties:
     5.  **Async Operations:** Use `async/await` for all asynchronous operations (e.g., database calls, external API requests).
     6.  **Code Style:** Write clean, readable code. Add concise inline comments (`// comment`) ONLY for complex or non-obvious logic sections.
     7.  **Security:** Be mindful of security best practices. Assume input validation is handled by DTOs/Pipes, but be cautious with data handling.
-    8.  **Method Delegation:** Implement the core logic directly. Call methods on injected dependencies (`this.dependencyName.method()`) as needed. Avoid defining new private helper methods within the generated snippet itself.
+    8.  **Method Delegation:** Use the function description to fully implement the business logic in the function without calling any external methods, services, or delegating execution to other functions.
 
     **Output Constraints:**
     - Return **ONLY** the raw TypeScript code for the function's body.
