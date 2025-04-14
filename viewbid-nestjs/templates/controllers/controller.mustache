@@ -1,15 +1,17 @@
 {{>licenseInfo}}
 
+import { AxiosRequestConfig } from 'axios';
 import { Body, Controller, Delete, Get, Param, Patch, Post, Put, Query, Req, UseGuards } from '@nestjs/common';
 import { BaseController } from '@mvc/controllers/base.controller';
 import { ErrorResponse } from '@mvc/http/responses/error-response';
-import { AxiosRequestConfig } from 'axios';
+import { ListResultset } from '@mvc/data/list-resultset';
 import { Observable } from 'rxjs';
 import { {{classname}}Handler } from '../handlers/{{classVarName}}.service.handler';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Request } from '../http/requests/{{classVarName}}.request';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Dto } from '../dtos/{{classVarName}}.dto';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}ListResponse } from '../http/responses/{{classVarName}}.list.response';
 import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}}Response } from '../http/responses/{{classVarName}}.response';
+import { {{#lambda.pascalcase}}{{classVarName}}{{/lambda.pascalcase}} } from '../model/{{classVarName}}';
 
 {{#description}}
 /**
