@@ -22,6 +22,7 @@ generated-code/*
 *.swp
 *.swo
 target
+!modules/openapi-generator-cli/target/openapi-generator-cli.jar
 .idea
 .lib
 atlassian-ide-plugin.xml
