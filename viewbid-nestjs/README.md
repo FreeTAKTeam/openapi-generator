@@ -13,12 +13,7 @@ set LLM_API_Key=[ChatGPTAPIKEY]
 ```bash
 
 rm -rf viewbid-nestjs/output && \
-java -jar modules/openapi-generator-cli/target/openapi-generator-cli.jar generate \
-    -i viewbid-nestjs/yamls/SubscriberManagementAPI-OAS.yaml \
-    -g typescript-nestjs \
-    -o viewbid-nestjs/output \
-    -c viewbid-nestjs/config.yml \
-    --skip-validate-spec
+java -jar modules/openapi-generator-cli/target/openapi-generator-cli.jar generate -c viewbid-nestjs/config.yml
 ```
 
 ``` cmd

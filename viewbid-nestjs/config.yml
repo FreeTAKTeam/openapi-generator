@@ -1,3 +1,8 @@
+generatorName: typescript-nestjs
+inputSpec: viewbid-nestjs/yamls/SubscriberManagementAPI-OAS.yaml
+outputDir: viewbid-nestjs/output
+skipValidateSpec: true
+
 templateDir: viewbid-nestjs/templates
 
 additionalProperties:
