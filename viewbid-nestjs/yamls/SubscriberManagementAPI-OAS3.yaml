@@ -217,22 +217,28 @@ paths:
        - subscribersHelper
       description: >-
         this function named generateSubscriptionKey , accepts a subscriber object as input and returns a unique, cryptographically secure subscription key as a string. The function should meet the following requirements:
+        Requirements:
+        Include proper error handling.
+        The logic for generating the subscription key must be implemented inline. Do not delegate it to another method or helper. Do not return a placeholder value or a mock implementation. Use `crypto` directly in the body.
+        Add inline comments to explain key steps in the code.
+        Provide an example usage of the function.
+        Use Node.js `crypto` only (NOT Math.random).
+        Use subscriber.id + a secure nonce (from crypto.randomBytes).
+        Hash the string using SHA-256 (via crypto.createHash).
+        Return the hex string. Do not use placeholder logic or helpers
         
         Input:
         A subscriber object 
         Assume the object contains at least a unique identifier (such as id).
         Operation:
         Use industry-standard cryptographic methods to generate the key.
-        Incorporate a cryptographically secure random nonce or salt combined with the subscriber's unique identifier.
+        Incorporate a cryptographically library like Nest.js crypto  random nonce or salt combined with the subscriber's unique identifier.
         Apply a secure hash function (for example, SHA-256) to the concatenated data to produce the final key.
         
         Output:
         Return the generated subscription key as a string.
         
-        Additional Requirements:
-        Include proper error handling.
-        Add inline comments to explain key steps in the code.
-        Provide an example usage of the function.
+
         
       operationId: generateSubscriptionKey
       requestBody:
@@ -525,7 +531,7 @@ components:
                 lots:
                 auctionlots: Acts as a linking class that assigns lots to auctions and controls scheduling or indexing within those auctions.
                 
-                auctions: Outlines each auction’s identity and timeframe, referencing multiple lots via auctionlots.
+                auctions: Outlines each auctionï¿½s identity and timeframe, referencing multiple lots via auctionlots.
             subscriptionkey:
               type: string
               description: >-
