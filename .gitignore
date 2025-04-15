@@ -296,3 +296,6 @@ samples/client/jetbrains/adyen/checkout71/http/client/Apis/http-client.private.e
 
 # Viewbid generated code
 viewbid-nestjs/output/*
+runGenerator.bat
+samples/yaml/openapitools.json
+viewbid-nestjs/openapi-generator-cli.jar

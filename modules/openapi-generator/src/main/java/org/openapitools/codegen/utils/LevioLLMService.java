@@ -130,6 +130,13 @@ public class LevioLLMService {
         promptBuilder.append("HTTP Method: ").append(op.httpMethod).append("\n");
         promptBuilder.append("Path: ").append(op.path).append("\n");
 
+        // Add  operationspeification  if available (e.g., from OpenAPI description or notes)
+        if (op.summary != null && !op.summary.isBlank()) {
+            promptBuilder.append("Description:\n").append(op.summary).append("\n\n");
+        }
+        if (op.notes != null && !op.notes.isBlank()) {
+            promptBuilder.append("Implementation Instructions:\n").append(op.notes).append("\n\n");
+        }
         // Include parameters if available.
         if (op.allParams != null && !op.allParams.isEmpty()) {
             promptBuilder.append("Parameters:\n");
