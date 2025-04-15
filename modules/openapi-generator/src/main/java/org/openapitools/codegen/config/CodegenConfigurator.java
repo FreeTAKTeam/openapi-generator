@@ -600,6 +600,11 @@ public class CodegenConfigurator {
         return this;
     }
 
+    public CodegenConfigurator setSkipValidateSpec(boolean skipValidateSpec) {
+        workflowSettingsBuilder.withSkipValidateSpec(skipValidateSpec);
+        return this;
+    }
+
     public CodegenConfigurator setStrictSpecBehavior(boolean strictSpecBehavior) {
         workflowSettingsBuilder.withStrictSpecBehavior(strictSpecBehavior);
         return this;

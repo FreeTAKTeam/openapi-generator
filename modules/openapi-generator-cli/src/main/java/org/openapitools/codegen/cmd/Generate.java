@@ -486,6 +486,10 @@ public class Generate extends OpenApiGeneratorCommand {
             configurator.setSkipOperationExample(skipOperationExample);
         }
 
+        if (Boolean.TRUE.equals(skipValidateSpec)) {
+            configurator.setSkipValidateSpec(skipValidateSpec);
+        }
+
         if (enablePostProcessFile != null) {
             configurator.setEnablePostProcessFile(enablePostProcessFile);
         }

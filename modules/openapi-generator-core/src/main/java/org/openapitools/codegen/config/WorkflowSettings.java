@@ -40,6 +40,7 @@ public class WorkflowSettings {
     public static final boolean DEFAULT_SKIP_OVERWRITE = false;
     public static final boolean DEFAULT_REMOVE_OPERATION_ID_PREFIX = false;
     public static final boolean DEFAULT_SKIP_OPERATION_EXAMPLE = false;
+    public static final boolean DEFAULT_SKIP_VALIDATE_SPEC = false;
     public static final boolean DEFAULT_LOG_TO_STDERR = false;
     public static final boolean DEFAULT_VALIDATE_SPEC = true;
     public static final boolean DEFAULT_ENABLE_POST_PROCESS_FILE = false;
@@ -57,6 +58,7 @@ public class WorkflowSettings {
     private boolean skipOperationExample = DEFAULT_SKIP_OPERATION_EXAMPLE;
     private boolean logToStderr = DEFAULT_LOG_TO_STDERR;
     private boolean validateSpec = DEFAULT_VALIDATE_SPEC;
+    private boolean skipValidateSpec = DEFAULT_SKIP_VALIDATE_SPEC;
     private boolean enablePostProcessFile = DEFAULT_ENABLE_POST_PROCESS_FILE;
     private boolean enableMinimalUpdate = DEFAULT_ENABLE_MINIMAL_UPDATE;
     private boolean strictSpecBehavior = DEFAULT_STRICT_SPEC_BEHAVIOR;
@@ -75,6 +77,7 @@ public class WorkflowSettings {
         this.removeOperationIdPrefix = builder.removeOperationIdPrefix;
         this.logToStderr = builder.logToStderr;
         this.validateSpec = builder.validateSpec;
+        this.skipValidateSpec = builder.skipValidateSpec;
         this.enablePostProcessFile = builder.enablePostProcessFile;
         this.enableMinimalUpdate = builder.enableMinimalUpdate;
         this.strictSpecBehavior = builder.strictSpecBehavior;
@@ -107,6 +110,7 @@ public class WorkflowSettings {
         builder.skipOperationExample = copy.isSkipOperationExample();
         builder.logToStderr = copy.isLogToStderr();
         builder.validateSpec = copy.isValidateSpec();
+        builder.skipValidateSpec = copy.getSkipValidateSpec();
         builder.enablePostProcessFile = copy.isEnablePostProcessFile();
         builder.enableMinimalUpdate = copy.isEnableMinimalUpdate();
         builder.generateAliasAsModel = copy.isGenerateAliasAsModel();
@@ -198,7 +202,17 @@ public class WorkflowSettings {
      * @return <code>true</code> if spec document validation is enabled, otherwise <code>false</code>. Default: <code>true</code>.
      */
     public boolean isValidateSpec() {
-        return validateSpec;
+        // Default validation is true, skip if skipValidateSpec is explicitly true
+        return this.validateSpec && !Boolean.TRUE.equals(this.skipValidateSpec);
+    }
+
+    /**
+     * Gets the raw value of skipValidateSpec flag. Used internally and by copy constructor.
+     *
+     * @return The Boolean value of skipValidateSpec.
+     */
+    public Boolean getSkipValidateSpec() {
+        return skipValidateSpec;
     }
 
     /**
@@ -303,6 +317,7 @@ public class WorkflowSettings {
         private Boolean skipOverwrite = DEFAULT_SKIP_OVERWRITE;
         private Boolean removeOperationIdPrefix = DEFAULT_REMOVE_OPERATION_ID_PREFIX;
         private Boolean skipOperationExample = DEFAULT_SKIP_OPERATION_EXAMPLE;
+        private Boolean skipValidateSpec = DEFAULT_SKIP_VALIDATE_SPEC;
         private Boolean logToStderr = DEFAULT_LOG_TO_STDERR;
         private Boolean validateSpec = DEFAULT_VALIDATE_SPEC;
         private Boolean enablePostProcessFile = DEFAULT_ENABLE_POST_PROCESS_FILE;
@@ -389,6 +404,17 @@ public class WorkflowSettings {
          */
         public Builder withSkipOperationExample(Boolean skipOperationExample) {
             this.skipOperationExample = skipOperationExample != null ? skipOperationExample : Boolean.valueOf(DEFAULT_REMOVE_OPERATION_ID_PREFIX);
+            return this;
+        }
+
+        /**
+         * Sets the {@code skipValidateSpec} and returns a reference to this Builder so that the methods can be chained together.
+         *
+         * @param skipValidateSpec the {@code skipValidateSpec} to set
+         * @return a reference to this Builder
+         */
+        public Builder withSkipValidateSpec(Boolean skipValidateSpec) {
+            this.skipValidateSpec = skipValidateSpec != null ? skipValidateSpec : Boolean.valueOf(DEFAULT_SKIP_VALIDATE_SPEC);
             return this;
         }
 
@@ -578,6 +604,7 @@ public class WorkflowSettings {
                 ", removeOperationIdPrefix=" + removeOperationIdPrefix +
                 ", logToStderr=" + logToStderr +
                 ", validateSpec=" + validateSpec +
+                ", skipValidateSpec=" + skipValidateSpec +
                 ", enablePostProcessFile=" + enablePostProcessFile +
                 ", enableMinimalUpdate=" + enableMinimalUpdate +
                 ", strictSpecBehavior=" + strictSpecBehavior +
@@ -609,7 +636,8 @@ public class WorkflowSettings {
                 Objects.equals(getTemplateDir(), that.getTemplateDir()) &&
                 Objects.equals(getTemplatingEngineName(), that.getTemplatingEngineName()) &&
                 Objects.equals(getIgnoreFileOverride(), that.getIgnoreFileOverride()) &&
-                Objects.equals(getGlobalProperties(), that.getGlobalProperties());
+                Objects.equals(getGlobalProperties(), that.getGlobalProperties()) &&
+                Objects.equals(getSkipValidateSpec(), that.getSkipValidateSpec());
     }
 
     @Override
@@ -630,7 +658,8 @@ public class WorkflowSettings {
                 getTemplateDir(),
                 getTemplatingEngineName(),
                 getIgnoreFileOverride(),
-                getGlobalProperties()
+                getGlobalProperties(),
+                getSkipValidateSpec()
         );
     }
 }

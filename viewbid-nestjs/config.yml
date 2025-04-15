@@ -1,5 +1,5 @@
 generatorName: typescript-nestjs
-inputSpec: viewbid-nestjs/yamls/SubscriberManagementAPI-OAS.yaml
+inputSpec: viewbid-nestjs/yamls/SubscriberManagementAPI-OAS3.yaml
 outputDir: viewbid-nestjs/output
 skipValidateSpec: true
 
