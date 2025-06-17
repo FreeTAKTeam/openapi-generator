@@ -1,9 +1,9 @@
 generatorName: typescript-nestjs
-inputSpec: viewbid-nestjs/yamls/SubscriberManagementAPI-OAS3.yaml
-outputDir: viewbid-nestjs/output
+inputSpec: levio-nestjs/yamls/PickUpManagement-OAS.yaml
+outputDir: levio-nestjs/output
 skipValidateSpec: true
 
-templateDir: viewbid-nestjs/templates
+templateDir: levio-nestjs/templates
 
 additionalProperties:
   artifactId: viewbid-nestjs
@@ -67,6 +67,11 @@ additionalProperties:
   llmTopP: 1.0
   llmFrequencyPenalty: 0.0
   llmPresencePenalty: 0.0
+   # other props…
+  typeMappings:
+   PickUpStatus: PickUpStatus
+  importMappings:
+    PickUpStatus: "../model/PickUpStatus"
 
 files:
   controllers/controller.mustache:

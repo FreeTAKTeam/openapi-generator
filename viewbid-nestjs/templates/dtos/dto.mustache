@@ -3,12 +3,20 @@
 
 {{#models}}
 {{#model}}
+
+
+{{#tsImports}}
+// TS imports (auto-detected by generator)
+import { {{classname}} }from '../model/{{classname}}.model';
+{{/tsImports}}
+
+
 export class {{classname}}Dto {
   {{#vars}}
   {{#description}}
   /** {{description}} */
   {{/description}}
-  {{name}}{{^required}}?{{/required}}: {{dataType}};
+  {{name}}{{^required}}?{{/required}}: {{{dataType}}};
 
   {{/vars}}
   constructor(row: any) {

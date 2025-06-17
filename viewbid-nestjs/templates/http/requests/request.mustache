@@ -3,6 +3,10 @@
 {{#models}}
 {{#model}}
 import { IsNotEmpty, IsString, IsBoolean, IsOptional } from 'class-validator';
+{{#tsImports}}
+// TS imports (auto-detected by generator)
+import { {{classname}} } from '../model/{{filename}}.ts';
+{{/tsImports}}
 
 export class {{classname}}Request {
     {{#vars}}
@@ -19,7 +23,9 @@ export class {{classname}}Request {
         {{#isNumber}}
         // Add appropriate validator if needed
         {{/isNumber}}
-        {{name}}: {{dataType}};
+        
+       
+        {{name}}: {{{dataType}}};
     {{/vars}}
 }
 

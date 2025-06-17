@@ -1,0 +1,609 @@
+openapi: 3.0.1
+info:
+  title: PickUpManagement
+  version: '25.06.13b'
+  description: >-
+    The PickUp Management API provides a complete set of operations for managing the scheduling, status tracking, and address assignment for auction item pickups within the ViewBid ecosystem.
+  contact:
+    name: Will Taylor-Melanson
+    url: viewbid.ca
+    email: willdev@viewbid.ca
+  license:
+    name: viewbid.ca
+tags:
+  - name: Invoices
+  - name:  Pickup
+paths:
+  /AccountAddresse/{id}:
+    get:
+      x-scope: public
+      tags:
+       - AccountAddresse
+      description: >-
+      summary: retrieve an existing AccountAddresse record based on the provided ID.
+      operationId: RetreiveAccountAddresse
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200AccountAddresse_get'
+  /Timeslots/{id}:
+    get:
+      x-scope: public
+      tags:
+       - Timeslots
+      description: >-
+      summary: retrieve an existing Timeslots record based on the provided ID.
+      operationId: RetreiveTimeslots
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Timeslots_get'
+  /Invoices/{id}:
+    get:
+      x-scope: public
+      tags:
+       - Invoices
+      description: >-
+      summary: retrieve an existing Invoices record based on the provided ID.
+      operationId: RetreiveInvoices
+      parameters:
+        - $ref: '#/components/parameters/id'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Invoices_get'
+  /timeslots/invoices:
+    get:
+      x-scope: package
+      tags:
+       - timeslotsInvoices
+      description: >-
+        this function sends as parameter the the timeslots.id. the timeslots object is retrieved and then the Timeaslots.accountinmapid is used to retrive and a list of invoices to be allocated to that timeslot  query the Database for all the Invoices related to this account that are currently open (status = 'PENDING_BUYER_REVIEW'') and returns an array of invoices.
+        it uses the following classes:
+        - timeslots
+        -Invoices
+      summary: return an array of Invoices for Pickup
+      operationId: ListPickUpInvoices
+      parameters:
+        - $ref: '#/components/parameters/AccountID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Invoices_get'
+    put:
+      x-scope: package
+      tags:
+       - timeslotsInvoices
+      description: >-
+        this function sends as parameter the ID of a existing TimeSlot and a list of valid invoicesID that will be part of the pickup. It returns the complete updated object
+      summary: Set the Invoices Id associated to the timeslot
+      operationId: PatchPickUpInvoices
+      parameters:
+        - $ref: '#/components/parameters/TimeSlotsID'
+        - $ref: '#/components/parameters/InvoicesListID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Timeslots_put'
+  /Invoices:
+    post:
+      x-scope: public
+      tags:
+       - Invoices
+      description: >-
+      summary: Creates a new Invoices record.
+      operationId: CreateInvoices
+      requestBody:
+        $ref: '#/components/requestBodies/Invoices'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Invoices_post'
+    delete:
+      x-scope: public
+      tags:
+       - Invoices
+      description: >-
+      summary: Deletes an existing Invoices record based on the provided ID.
+      operationId: DeleteInvoices
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Invoices_delete'
+    get:
+      x-scope: public
+      tags:
+       - Invoices
+      description: >-
+      summary: Retrieves a list of all Invoices
+      operationId: ListInvoices
+      responses:
+        '200':
+          $ref: '#/components/responses/200Invoices_get'
+    patch:
+      x-scope: public
+      tags:
+       - Invoices
+      description: >-
+      summary: Updates an existing Invoices record.
+      operationId: PatchInvoices
+      requestBody:
+        $ref: '#/components/requestBodies/Invoices'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Invoices_patch'
+  /Timeslots:
+    post:
+      x-scope: public
+      tags:
+       - Timeslots
+      description: >-
+      summary: Creates a new Timeslots record.
+      operationId: CreateTimeslots
+      requestBody:
+        $ref: '#/components/requestBodies/Timeslots'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Timeslots_post'
+    delete:
+      x-scope: public
+      tags:
+       - Timeslots
+      description: >-
+      summary: Deletes an existing Timeslots record based on the provided ID.
+      operationId: DeleteTimeslots
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Timeslots_delete'
+    get:
+      x-scope: public
+      tags:
+       - Timeslots
+      description: >-
+      summary: Retrieves a list of all Timeslots
+      operationId: ListTimeslots
+      responses:
+        '200':
+          $ref: '#/components/responses/200Timeslots_get'
+    patch:
+      x-scope: public
+      tags:
+       - Timeslots
+      description: >-
+      summary: Updates an existing Timeslots record.
+      operationId: PatchTimeslots
+      requestBody:
+        $ref: '#/components/requestBodies/Timeslots'
+      responses:
+        '200':
+          $ref: '#/components/responses/200Timeslots_patch'
+  /AccountAddresse:
+    post:
+      x-scope: public
+      tags:
+       - AccountAddresse
+      description: >-
+      summary: Creates a new AccountAddresse record.
+      operationId: CreateAccountAddresse
+      requestBody:
+        $ref: '#/components/requestBodies/AccountAddresse'
+      responses:
+        '200':
+          $ref: '#/components/responses/200AccountAddresse_post'
+    delete:
+      x-scope: public
+      tags:
+       - AccountAddresse
+      description: >-
+      summary: Deletes an existing AccountAddresse record based on the provided ID.
+      operationId: DeleteAccountAddresse
+      parameters:
+        - $ref: '#/components/parameters/ID'
+      responses:
+        '200':
+          $ref: '#/components/responses/200AccountAddresse_delete'
+    get:
+      x-scope: public
+      tags:
+       - AccountAddresse
+      description: >-
+      summary: Retrieves a list of all AccountAddresse
+      operationId: ListAccountAddresse
+      responses:
+        '200':
+          $ref: '#/components/responses/200AccountAddresse_get'
+    patch:
+      x-scope: public
+      tags:
+       - AccountAddresse
+      description: >-
+      summary: Updates an existing AccountAddresse record.
+      operationId: PatchAccountAddresse
+      requestBody:
+        $ref: '#/components/requestBodies/AccountAddresse'
+      responses:
+        '200':
+          $ref: '#/components/responses/200AccountAddresse_patch'
+components:
+  schemas:
+    AccountAddresse:
+      allOf:
+        - $ref: '#/components/schemas/viewBidBase'
+        - type: object
+          properties:
+            address1:
+              type: string
+              description: >-
+            address2:
+              type: string
+              description: >-
+            city:
+              type: string
+              description: >-
+            province:
+              type: string
+              description: >-
+            country:
+              type: string
+              description: >-
+            postalCode:
+              type: string
+              description: >-
+            buzzer:
+              type: string
+              description: >-
+            accountMappingsId:
+              type: string
+              description: >-
+            locationName:
+              type: string
+              description: >-
+    viewBidBase:
+      allOf:
+        - type: object
+          properties:
+            createdon:
+              type: string
+              format: date
+              description: >-
+                datetime in which this object was create
+            createdby:
+              type: string
+              description: >-
+                user name irresponsible for the operation
+            updatedon:
+              type: string
+              format: date
+              description: >-
+                datetime in which this object was last updated
+            updatedby:
+              type: string
+              description: >-
+                user name irresponsible for the operation
+            deletedon:
+              type: string
+              format: date
+              description: >-
+                datetime in which this object was deleted
+            deletedby:
+              type: string
+              description: >-
+                user name irresponsible for the operation
+            id:
+              type: string
+              description: >-
+    Invoices:
+      allOf:
+        - $ref: '#/components/schemas/viewBidBase'
+        - type: object
+          properties:
+            mode:
+              type: string
+              description: >-
+            auctionsid:
+              type: string
+              description: >-
+            number:
+              type: string
+              description: >-
+            bidderId:
+              type: string
+              description: >-
+            notes:
+              type: string
+              description: >-
+            specialInstructions:
+              type: string
+              description: >-
+            poNumber:
+              type: string
+              description: >-
+            dueDate:
+              type: string
+              format: date
+              description: >-
+            isShipping:
+              type: string
+              description: >-
+            invoiceTemplatesId:
+              type: string
+              description: >-
+            itemsSubtotal:
+              type: string
+              description: >-
+            shippingSubtotal:
+              type: string
+              description: >-
+            taxesSubtotal:
+              type: string
+              description: >-
+            totalAmount:
+              type: string
+              description: >-
+            amountDue:
+              type: string
+              description: >-
+            currencyType:
+              description: >-
+              $ref: '#/components/schemas/CurrencyTypes'
+    Timeslots:
+      allOf:
+        - $ref: '#/components/schemas/viewBidBase'
+        - type: object
+          properties:
+            pickuptime:
+              type: string
+              format: date
+              description: >-
+            accountmappingsid:
+              type: string
+              description: >-
+                the account related to this Timeslots 
+            auctionsid:
+              type: array
+              items:
+                type: string
+              description: >-
+            staffid:
+              type: string
+              description: >-
+            invoicesid:
+              type: array
+              items:
+                type: string
+              description: >-
+            index:
+              type: string
+              description: >-
+            status:
+              description: >-
+              $ref: '#/components/schemas/PickUpStatus'
+    Error:
+      description: Error
+    CurrencyTypes:
+      enum:
+        - CAD
+        - USD
+      type: string
+      description: >-
+    PickUpStatus:
+      type: string
+      enum:
+        - Pending
+        - In-Progress
+        - Ready
+      description: >-
+  parameters:
+    InvoicesListID:
+      name: invoiceslistid
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: query
+    AccountID:
+      name: accountid
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: query
+    TimeSlotsID:
+      name: timeslotsid
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: query
+    ID:
+      name: ID
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: query
+    id:
+      name: id2
+      required: true
+      description: >-
+        TODO
+      schema:
+        type: string
+      in: path
+  responses:
+    200AccountAddresse_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountAddresse'
+    200Timeslots_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Timeslots'
+    200Invoices_get:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Invoices'
+    200Timeslots_put:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Timeslots'
+    200Invoices_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Invoices'
+    200Invoices_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Invoices'
+    200Invoices_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Invoices'
+    200Timeslots_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Timeslots'
+    200Timeslots_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Timeslots'
+    200Timeslots_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Timeslots'
+    200AccountAddresse_post:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountAddresse'
+    200AccountAddresse_delete:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountAddresse'
+    200AccountAddresse_patch:
+      description: Success
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountAddresse'
+    '200':
+      description: OK
+    '201':
+      description: Added Object
+    '202':
+      description: Accepted
+    '204':
+      description: Deleted
+    '400':
+      description: Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '401':
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '403':
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '404':
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '405':
+      description: Method Not allowed
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '409':
+      description: Conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '500':
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '501':
+      description: Not Implemented
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    '503':
+      description: Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    'Error':
+      description: Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  requestBodies:
+    AccountAddresse:
+      description: >-
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/AccountAddresse'
+      required: true
+    Invoices:
+      description: >-
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Invoices'
+      required: true
+    Timeslots:
+      description: >-
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Timeslots'
+      required: true
+x-uml-relationships:
+  
+
